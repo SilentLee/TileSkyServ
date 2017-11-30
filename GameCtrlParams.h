@@ -1,0 +1,302 @@
+#pragma once
+
+// 不同斗场玩家数量
+#define NUM_OF_PLAYERS_FOR_1V1											2
+#define NUM_OF_PLAYERS_FOR_2V2											4
+
+
+// 不同等级用户的地图尺寸
+#define MAP_SIZE_BASIC								9
+
+// 默认游戏持续时间
+#define DEFAULT_GAME_TIME						30000000
+// 游戏开始准备时间
+#define DEFAULT_GAME_PREPARE_TIME		10
+// 默认游戏开始时的初始能量值
+#define DEFAULT_GAME_POWER				10
+// 游戏中最大能量值
+#define MAX_GAME_POWER						20
+
+// 各型飞机 装备布设消耗能量值
+#define POWER_FOR_JUNIOR_PLANE                      15
+#define POWER_FOR_MIDDLE_PLANE                      15
+#define POWER_FOR_SENIOR_PLANE                      15
+
+#define POWER_FOR_JUNIOR_STEALTH_PLANE              15
+#define POWER_FOR_MIDDLE_STEALTH_PLANE              15
+#define POWER_FOR_SENIOR_STEALTH_PLANE              15
+
+#define POWER_FOR_SENIOR_ANTI_STEALTH_RADAR         15
+#define POWER_FOR_MIDDLE_ANTI_STEALTH_RADAR         15
+#define POWER_FOR_JUNIOR_ANTI_STEALTH_RADAR         15
+
+#define POWER_FOR_SENIOR_MISSILE                    15
+#define POWER_FOR_MIDDLE_MISSILE                    15
+#define POWER_FOR_JUNIOR_MISSILE                    15
+
+#define POWER_FOR_SENIOR_RADAR                      15
+#define POWER_FOR_MIDDLE_RADAR                      15
+#define POWER_FOR_JUNIOR_RADAR                      15
+
+#define POWER_FOR_SENIOR_CANNONBALL                 15
+#define POWER_FOR_MIDDLE_CANNONBALL                 15
+#define POWER_FOR_JUNIOR_CANNONBALL                 15
+
+//#define POWER_FOR_JUNIOR_PLANE                      2
+//#define POWER_FOR_MIDDLE_PLANE                      3
+//#define POWER_FOR_SENIOR_PLANE                      4
+//
+//#define POWER_FOR_JUNIOR_STEALTH_PLANE              4
+//#define POWER_FOR_MIDDLE_STEALTH_PLANE              5
+//#define POWER_FOR_SENIOR_STEALTH_PLANE              6
+//
+//#define POWER_FOR_SENIOR_ANTI_STEALTH_RADAR         7
+//#define POWER_FOR_MIDDLE_ANTI_STEALTH_RADAR         6
+//#define POWER_FOR_JUNIOR_ANTI_STEALTH_RADAR         5
+//
+//#define POWER_FOR_SENIOR_MISSILE                    9
+//#define POWER_FOR_MIDDLE_MISSILE                    8
+//#define POWER_FOR_JUNIOR_MISSILE                    7
+//
+//#define POWER_FOR_SENIOR_RADAR                      5
+//#define POWER_FOR_MIDDLE_RADAR                      4
+//#define POWER_FOR_JUNIOR_RADAR                      3
+//
+//#define POWER_FOR_SENIOR_CANNONBALL                 3
+//#define POWER_FOR_MIDDLE_CANNONBALL                 2
+//#define POWER_FOR_JUNIOR_CANNONBALL                 1
+
+// 飞机被击毁后的坠落时间
+#define FALLING_DURATION_OF_JUNIOR_PLANE			3
+#define FALLING_DURATION_OF_MIDDLE_PLANE			5
+#define FALLING_DURATION_OF_SENIOR_PLANE			7
+#define FALLING_DURATION_OF_JUNIOR_STEALTH_PLANE			3
+#define FALLING_DURATION_OF_MIDDLE_STEALTH_PLANE			5
+#define FALLING_DURATION_OF_SENIOR_STEALTH_PLANE			7
+
+// mapCell displayStatus (STATUS 用 2 个 BYTE 即可表示所有状态)
+// mapOpponentCell 独有
+#define STATUS_UNKNOWN														0x0000
+// mapOwnCell 与 mapOpponentCell 共有 
+#define STATUS_EMPTY																0x0001
+#define STATUS_PLANE_FILLED												0x0002
+#define STATUS_STEALTHY_PLANE_FILLED						0x0004
+#define STATUS_AP_COVERD													0x0008
+#define STATUS_STEALTHY_AP_COVERD							0x0010
+#define STATUS_RADAR_EFFECT											0x0020
+#define STATUS_ANTI_STEALTHY_RADAR_EFFECT			0x0040
+#define STATUS_HITTED															0x0080
+#define STATUS_DESTROYED													0x0100
+
+// 飞机方格基础 HP (需要 2 个 BYTE 表示所有数值 )
+#define BASIC_HP_OF_PLANE_CELL									      10
+// 各等级飞机方格附加 HP
+#define ADD_HP_OF_PLANE_CELL_LEVEL_1                         100
+#define ADD_HP_OF_PLANE_CELL_LEVEL_2                         200
+#define ADD_HP_OF_PLANE_CELL_LEVEL_3                         300
+#define ADD_HP_OF_PLANE_CELL_LEVEL_4                         400
+#define ADD_HP_OF_PLANE_CELL_LEVEL_5                         500
+#define ADD_HP_OF_PLANE_CELL_LEVEL_6                         600
+#define ADD_HP_OF_PLANE_CELL_LEVEL_7                         700
+#define ADD_HP_OF_PLANE_CELL_LEVEL_8                         8000
+#define ADD_HP_OF_PLANE_CELL_LEVEL_9                         9000
+#define ADD_HP_OF_PLANE_CELL_LEVEL_10                        1000
+#define ADD_HP_OF_PLANE_CELL_LEVEL_11                        1100
+#define ADD_HP_OF_PLANE_CELL_LEVEL_12                        1200
+
+// 装甲方格基础 HP (需要 2 个 BYTE 表示所有数值 )
+#define BASIC_HP_OF_ARMOR_CELL				10
+// 各等级装甲方格附加 HP
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_1                         100
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_2                         200
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_3                         300
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_4                         400
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_5                         500
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_6                         600
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_7                         700
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_8                         8000
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_9                         9000
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_10                       1000
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_11                       1100
+#define ADD_HP_OF_ARMOR_CELL_LEVEL_12                       1200
+
+typedef enum PACKET_LEVEL {
+	PACKET_LEVEL_1 = 1,
+	PACKET_LEVEL_2,
+	PACKET_LEVEL_3,
+	PACKET_LEVEL_4,
+	PACKET_LEVEL_5,
+	PACKET_LEVEL_6,
+	PACKET_LEVEL_7,
+	PACKET_LEVEL_8,
+	PACKET_LEVEL_9
+};
+
+typedef enum CARD_TYPE {
+	JUNIOR_PLANE = 1,
+	MIDDLE_PLANE,
+	SENIOR_PLANE,
+	JUNIOR_STEALTH_PLANE,
+	MIDDLE_STEALTH_PLANE,
+	SENIOR_STEALTH_PLANE,
+	SENIOR_ANTI_STEALTH_RADAR,
+	MIDDLE_ANTI_STEALTH_RADAR,
+	JUNIOR_ANTI_STEALTH_RADAR,
+	SENIOR_MISSILE,
+	MIDDLE_MISSILE,
+	JUNIOR_MISSILE,
+	SENIOR_RADAR,
+	MIDDLE_RADAR,
+	JUNIOR_RADAR,
+	SENIOR_CANNONBALL,
+	MIDDLE_CANNONBALL,
+	JUNIOR_CANNONBALL /* = 18 */
+};
+
+typedef enum SUPPLY_CHEST_TYPE {
+	WIN_REWARDS_1 = 1,
+	WIN_REWARDS_2,
+	WIN_REWARDS_3,
+	WIN_REWARDS_4,
+	WIN_REWARDS_5,
+	STAR_REWARDS,
+	FREE_REWARDS,
+	SUPPLY_CHEST_SMALL,
+	SUPPLY_CHEST_MIDDLE,
+	SUPPLY_CHEST_LARGE
+};
+
+#define KINDS_OF_CARDS_TO_SELL								3
+
+#define TOTAL_KINDS_OF_CARDS																			18
+#define KINDS_OF_CARD_IN_WIN_REWARDS													3
+#define KINDS_OF_CARD_IN_FREE_REWARDS													3
+#define KINDS_OF_CARD_IN_STAR_REWARDS													3
+#define KINDS_OF_CARD_IN_SUPPLY_CHEST_SMALL										4
+#define KINDS_OF_CARD_IN_SUPPLY_CHEST_MIDDLE									5
+#define KINDS_OF_CARD_IN_SUPPLY_CHEST_LARGE									6
+
+#define MOST_CARDS_IN_WIN_REWARDS															3
+#define MOST_CARDS_IN_FREE_REWARDS														4
+#define MOST_CARDS_IN_STAR_REWARDS														5
+#define MOST_CARDS_IN_SUPPLY_CHEST_SMALL											6
+#define MOST_CARDS_IN_SUPPLY_CHEST_MIDDLE											7
+#define MOST_CARDS_IN_SUPPLY_CHEST_LARGE											8
+
+#define COINS_IN_WIN_REWARDS																			100
+#define COINS_IN_FREE_REWARDS																		50
+#define COINS_IN_STAR_REWARDS																		200
+#define COINS_IN_SUPPLY_CHEST_SMALL															500
+#define COINS_IN_SUPPLY_CHEST_MIDDLE														1000
+#define COINS_IN_SUPPLY_CHEST_LARGE															2000
+
+#define DIAMONDS_IN_WIN_REWARDS																10
+#define DIAMONDS_IN_FREE_REWARDS																2
+#define DIAMONDS_IN_STAR_REWARDS																5
+#define DIAMONDS_IN_SUPPLY_CHEST_SMALL													20
+#define DIAMONDS_IN_SUPPLY_CHEST_MIDDLE												100
+#define DIAMONDS_IN_SUPPLY_CHEST_LARGE												500
+
+#define DIAMONDS_COST_FOR_WIN_REWARDS												0
+#define DIAMONDS_COST_FOR_FREE_REWARDS											0
+#define DIAMONDS_COST_FOR_STAR_REWARDS											0
+#define DIAMONDS_COST_FOR_SUPPLY_CHEST_SMALL								20
+#define DIAMONDS_COST_FOR_SUPPLY_CHEST_MIDDLE								40
+#define DIAMONDS_COST_FOR_SUPPLY_CHEST_LARGE								60
+
+#define COINS_PACKET_LEVEL_1				100
+#define COINS_PACKET_LEVEL_2				200
+#define COINS_PACKET_LEVEL_3				300
+#define COINS_PACKET_LEVEL_4				400
+#define COINS_PACKET_LEVEL_5				500
+#define COINS_PACKET_LEVEL_6				600
+#define COINS_PACKET_LEVEL_7				700
+#define COINS_PACKET_LEVEL_8				800
+#define COINS_PACKET_LEVEL_9				900
+
+#define DIAMONDS_PACKET_LEVEL_1				100
+#define DIAMONDS_PACKET_LEVEL_2				200
+#define DIAMONDS_PACKET_LEVEL_3				300
+#define DIAMONDS_PACKET_LEVEL_4				400
+#define DIAMONDS_PACKET_LEVEL_5				500
+#define DIAMONDS_PACKET_LEVEL_6				600
+#define DIAMONDS_PACKET_LEVEL_7				700
+#define DIAMONDS_PACKET_LEVEL_8				800
+#define DIAMONDS_PACKET_LEVEL_9				900
+
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_1				100
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_2				200
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_3				300
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_4				400
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_5				500
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_6				600
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_7				700
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_8				800
+#define DIAMONDS_COST_OF_COINS_PACKET_LEVEL_9				900
+
+#define COINS_COST_OF_JUNIOR_PLANE										100
+#define COINS_COST_OF_MIDDLE_PLANE										200
+#define COINS_COST_OF_SENIOR_PLANE										300
+#define COINS_COST_OF_JUNIOR_STEALTH_PLANE						400
+#define COINS_COST_OF_MIDDLE_STEALTH_PLANE						500
+#define COINS_COST_OF_SENIOR_STEALTH_PLANE						600
+#define COINS_COST_OF_SENIOR_ANTI_STEALTH_RADAR			700
+#define COINS_COST_OF_MIDDLE_ANTI_STEALTH_RADAR			800
+#define COINS_COST_OF_JUNIOR_ANTI_STEALTH_RADAR				900
+#define COINS_COST_OF_SENIOR_MISSILE									1000
+#define COINS_COST_OF_MIDDLE_MISSILE									1100
+#define COINS_COST_OF_JUNIOR_MISSILE									1200
+#define COINS_COST_OF_SENIOR_RADAR										1300
+#define COINS_COST_OF_MIDDLE_RADAR										1400
+#define COINS_COST_OF_JUNIOR_RADAR										1500
+#define COINS_COST_OF_SENIOR_CANNONBALL							1600
+#define COINS_COST_OF_MIDDLE_CANNONBALL							1700
+#define COINS_COST_OF_JUNIOR_CANNONBALL							1800
+
+// 升级花费金币数量
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_2			5
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_3			10
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_4			50
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_5			100
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_6			500
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_7			1000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_8			2000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_9			5000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_10			8000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_11			10000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_12			12000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_13			14000
+#define COST_OF_COINS_FOR_UPGRADE_TO_LEVEL_14			18000
+
+// 各等级升级所需卡牌数
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_2				2
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_3				5
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_4				10
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_5				20
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_6				50
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_7				100
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_8				200
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_9				500
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_10			1000
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_11			2000
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_12			5000
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_13			10000
+#define NUM_OF_CARDS_FOR_UPGRADE_TO_LEVEL_14			20000
+
+// 补给箱标准获取或解锁所需时间
+#define WIN_REWARDS_UNLOCK_DURATION						28800 // 8 hour
+#define FREE_REWARDS_INTERVAL										10800 // 3 hour
+#define STAR_REWARDS_INTERVAL										10800 // 3 hour
+
+// 各型雷达基础持续时间
+#define BASIC_DURATING_TIME_OF_JUNIOR_RADAR													3
+#define BASIC_DURATING_TIME_OF_MIDDLE_RADAR													3
+#define BASIC_DURATING_TIME_OF_SENIOR_RADAR													3
+#define BASIC_DURATING_TIME_OF_JUNIOR_ANTI_STEALTH_RADAR					3
+#define BASIC_DURATING_TIME_OF_MIDDLE_ANTI_STEALTH_RADAR				    3
+#define BASIC_DURATING_TIME_OF_SENIOR_ANTI_STEALTH_RADAR					3
+
+// 各型炮弹爆炸持续时间
+#define JUNIOR_EXPLOSION_DURATION				5
+#define MIDDLE_EXPLOSION_DURATION				5
+#define SENIOR_EXPLOSION_DURATION				5

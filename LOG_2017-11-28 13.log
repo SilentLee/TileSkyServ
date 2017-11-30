@@ -1,0 +1,11 @@
+[2017-11-28 13:57:15] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-28 13:57:16] # TileSky Game Server Running... #
+

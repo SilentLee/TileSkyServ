@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ConnectedUser">
+      <UniqueIdentifier>{345f459d-10dd-4046-a892-92392f363820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MySQL">
+      <UniqueIdentifier>{4e63519e-0122-49f4-915a-4846f7eb3f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameIocp">
+      <UniqueIdentifier>{390d5fef-61e5-404e-9c39-fb52a4874c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Room">
+      <UniqueIdentifier>{40442480-fd05-4370-a8bc-4215450056ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RoomManager">
+      <UniqueIdentifier>{a242a4b7-1913-4323-8d26-a9a4d088756e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Params">
+      <UniqueIdentifier>{a064ba5f-e645-4814-acb6-86c37699639b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{e7c8dab7-7fe6-48d6-8ac4-d63a79f6839d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConnectedUserManager">
+      <UniqueIdentifier>{48271049-455d-4bc6-b873-228268e0a518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet">
+      <UniqueIdentifier>{e79bdffb-0bce-4ecf-86f0-0aee9e041e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BattleField">
+      <UniqueIdentifier>{c39c01d7-39c4-4267-9a69-90e35ca7f322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BattleField\Weapons">
+      <UniqueIdentifier>{58ec80b7-234f-4022-a01a-5de76d85beeb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MySqlSession.h">
+      <Filter>MySQL</Filter>
+    </ClInclude>
+    <ClInclude Include="MySqlSessionPool.h">
+      <Filter>MySQL</Filter>
+    </ClInclude>
+    <ClInclude Include="MySqlResReader.h">
+      <Filter>MySQL</Filter>
+    </ClInclude>
+    <ClInclude Include="GameIocp.h">
+      <Filter>GameIocp</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>RoomManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectedUserManager.h">
+      <Filter>ConnectedUserManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectedUser.h">
+      <Filter>ConnectedUser</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCtrlParams.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="UserStruct.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrCodes.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\DOUBLE_BATTLE_PT_ReadPacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\DOUBLE_BATTLE_PT_Structure.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\DOUBLE_BATTLE_PT_WritePacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\DoubleBattleProtocol.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\PURCHASE_PT_ReadPacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\PURCHASE_PT_Structure.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\PURCHASE_PT_WritePacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\PurchaseProtocol.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\USER_PT_ReadPacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\USER_PT_Structure.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\USER_PT_WritePacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\UserProtocol.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleFieldParams.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_1V1_Protocol.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_1V1_PT_ReadPacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_1V1_PT_Structure.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_1V1_PT_WritePacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleField\BattleField.h">
+      <Filter>BattleField</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleField\Weapons\Weapon.h">
+      <Filter>BattleField\Weapons</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MySqlSession.cpp">
+      <Filter>MySQL</Filter>
+    </ClCompile>
+    <ClCompile Include="MySqlSessionPool.cpp">
+      <Filter>MySQL</Filter>
+    </ClCompile>
+    <ClCompile Include="MySqlResReader.cpp">
+      <Filter>MySQL</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectedUser.cpp">
+      <Filter>ConnectedUser</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectedUserManager.cpp">
+      <Filter>ConnectedUserManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameIocp.cpp">
+      <Filter>GameIocp</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>RoomManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpIoProc.cpp">
+      <Filter>GameIocp</Filter>
+    </ClCompile>
+    <ClCompile Include="DBProcRegist.cpp">
+      <Filter>ConnectedUser</Filter>
+    </ClCompile>
+    <ClCompile Include="DBProcUpdate.cpp">
+      <Filter>ConnectedUser</Filter>
+    </ClCompile>
+    <ClCompile Include="DBProcLogin.cpp">
+      <Filter>ConnectedUser</Filter>
+    </ClCompile>
+    <ClCompile Include="UserStruct.cpp">
+      <Filter>Struct</Filter>
+    </ClCompile>
+    <ClCompile Include="GmProc.cpp">
+      <Filter>ConnectedUser</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpPurchaseProtocolProc.cpp">
+      <Filter>GameIocp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpUserProtocolProc.cpp">
+      <Filter>GameIocp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpBattle1V1ProtocolProc.cpp">
+      <Filter>GameIocp</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleField\BattleField.cpp">
+      <Filter>BattleField</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleField\Weapons\Weapon.cpp">
+      <Filter>BattleField\Weapons</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

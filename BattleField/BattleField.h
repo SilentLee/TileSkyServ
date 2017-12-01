@@ -43,7 +43,7 @@ public:
 	void SetStatus(BATTLE_STATUS status) { mStatus = status; };
 	BATTLE_STATUS GetStatus() { return mStatus; };
 	// 当前游戏计时
-	bool DecreaseRemainGameTime() { max(0, mRemainGameTime--); return mRemainGameTime ? true : false; };
+	bool DecreaseRemainGameTime() { mRemainGameTime = max(0, mRemainGameTime--); return mRemainGameTime ? true : false; };
 	int GetRemainGameTime() { return mRemainGameTime; };
 
 	// 获取指定兵力

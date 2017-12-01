@@ -58,7 +58,7 @@ void CBattleField::InputTroops(int weaponType, int sideInGame, float posX, float
 // 战场态势刷新
 BATTLE_STATUS CBattleField::UpdateBattleFieldSituation()
 {
-	printf("BattleField::updateBattleFieldSituation\n");
+	printf("BattleField::updateBattleFieldSituation time = %d\n", mRemainGameTime);
 
 	// 刷新蓝方兵力位置
 	for (int index = 0; index < mTroopsInBlueTeam.size(); index++) {

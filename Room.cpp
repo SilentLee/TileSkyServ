@@ -98,6 +98,8 @@ bool CRoom::JoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType)
 	if (mType != RM_NO_TYPE && mType != roomType)
 		return false;
 
+	mType = roomType;
+
 	// 若玩家指针无效 返回
 	if (!connectedUser)
 		return false;
@@ -141,31 +143,6 @@ bool CRoom::JoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType)
 		mStatus = RM_WAITING;
 	}
 
-	// 向当前房间内已有玩家广播玩家列表更新信息
-
-
-	//// 向当前房间内已有玩家广播玩家列表更新信息
-	//list<CConnectedUser*>::iterator iter;
-	//S_PT_DOUBLE_BATTLE_UPDATE_USER_LIST_M ptDoubleBattleUpdateUserListM;
-	//memset(&ptDoubleBattleUpdateUserListM, 0, sizeof(ptDoubleBattleUpdateUserListM));
-	//CHAR* Pointer = ptDoubleBattleUpdateUserListM.USER_LIST;
-
-	//for(iter = mUserList.begin(); iter != mUserList.end(); ++iter) {
-	//	CConnectedUser* ConnectedUser = (CConnectedUser*)(*iter);
-	//	S_USER_ACCOUNT_INFO* userAccountInfo = ConnectedUser->GetUserAccountInfo();
-	//	S_USER_EQUIPMENT_INFO* userEquipmentInfo = ConnectedUser->GetUserEquipmentInfo();
-
-	//	S_DOUBLE_BATTLE_ROOM_USER DoubleBattleRoomUser = GetDoubleBattleRoomUserPacket(userAccountInfo, userEquipmentInfo);
-
-	//	memcpy(Pointer, &DoubleBattleRoomUser, sizeof(DoubleBattleRoomUser));
-	//	Pointer += sizeof(DoubleBattleRoomUser);
-	//	ptDoubleBattleUpdateUserListM.LENGTH += sizeof(DoubleBattleRoomUser);
-	//}
-
-	//ptDoubleBattleUpdateUserListM.CURRENT_USER_COUNT = mUserList.size();
-
-	//WriteAll(PT_DOUBLE_BATTLE_UPDATE_USER_LIST_M, WriteBuffer, WRITE_PT_DOUBLE_BATTLE_UPDATE_USER_LIST_M(WriteBuffer, ptDoubleBattleUpdateUserListM));
-
 	return true;
 }
 
@@ -173,17 +150,17 @@ void CRoom::SetUserStatusAll(USER_STATUS status)
 {
 	CThreadSync Sync;
 	
-	list<CConnectedUser*>::iterator iter;
-	
-	for(iter = mUsersInBlueTeam.begin(); iter != mUsersInRedTeam.end(); ++iter) {
-		CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
-		connectedUser->SetStatus(status);
-	}
+	//list<CConnectedUser*>::iterator iter;
+	//
+	//for(iter = mUsersInBlueTeam.begin(); iter != mUsersInRedTeam.end(); iter++) {
+	//	CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
+	//	connectedUser->SetStatus(status);
+	//}
 
-	for (iter = mUsersInRedTeam.begin(); iter != mUsersInRedTeam.end(); ++iter) {
-		CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
-		connectedUser->SetStatus(status);
-	}
+	//for (iter = mUsersInRedTeam.begin(); iter != mUsersInRedTeam.end(); iter++) {
+	//	CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
+	//	connectedUser->SetStatus(status);
+	//}
 }
 
  // 用户退出房间时调用的函数
@@ -325,7 +302,7 @@ bool CRoom::GameStart(void)
 	ptDoubleBattleStartGameM.ROOM_STATUS = GetStatus();
 	WriteAll(PT_DOUBLE_BATTLE_START_GAME_M, WriteBuffer, WRITE_PT_DOUBLE_BATTLE_START_GAME_M(WriteBuffer, ptDoubleBattleStartGameM));
 
-	// 游戏开始消息发送成功后 将房间状态更改为 RM_GAME_IN_PROGRESS
+	//// 游戏开始消息发送成功后 将房间状态更改为 RM_GAME_IN_PROGRESS
 	SetStatus(RM_GAME_IN_PROGRESS);
 
 	return true;

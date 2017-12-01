@@ -130,33 +130,38 @@ CRoom* CRoomManager::QuickJoinRoom(CConnectedUser *connectedUser, ROOM_TYPE room
 	if (!connectedUser)
 		return NULL;
 
-	CRoom* RoomEmpty = NULL;
+	CRoom* Room = NULL;
 
 	// 遍历房间动态数组
 	for(int i = 0; i < mRoomVectorDouble.size(); i++) {
-		CRoom* Room = mRoomVectorDouble[i];
-
 		// 若第 i 个房间的房间状态为 RM_WAITING 说明此房间有空位 玩家可以进入
-		if(Room->GetStatus() == RM_WAITING)
+		if (mRoomVectorDouble[i]->GetStatus() == RM_WAITING)
 		{
-			// 玩家进入房间 返回 Room 地址
-			if (Room->JoinRoom(connectedUser, roomType))
-				return Room;
-			// 若进入房间失败 继续检索
+			// 若玩家成功进入房间
+			if (mRoomVectorDouble[i]->JoinRoom(connectedUser, roomType)) {
+				// 将房间地址复制到 Room 中
+				Room = mRoomVectorDouble[i];
+				// 跳出遍历循环
+				break;
+			}
+			// 若玩家进入房间失败 继续检索
 			continue;
-		} else if(Room->GetStatus() == RM_EMPTY) {
+		}
+		else if (mRoomVectorDouble[i]->GetStatus() == RM_EMPTY) {
 			// 若检索到状态为空的房间 记录下房间地址 暂不进入房间
-			RoomEmpty = Room;
+			Room = mRoomVectorDouble[i];
 		}
 	}
 
 	// 若遍历房间数组后未发现有状态为等待的房间
-	if(RoomEmpty) {
-		// 将当前玩家放入空房间等待下一个玩家进入 同时在 JoniUserDouble 函数中将 RoomEmpty 状态更改为 RM_WAITING
-		RoomEmpty->JoinRoom(connectedUser, roomType);
+	// 如果有空房间 说明玩家此前没有找到房间进入
+	// 进入当前存储于 Room 中的空房间
+	// 如果没有空房间 Room 为 NULL 查找房间失败
+	if (Room != NULL && Room->GetStatus() == RM_EMPTY) {
+		Room->JoinRoom(connectedUser, roomType);
 	}
 
-	return RoomEmpty;
+	return Room;
 }
 
 // 每秒都要被调用来处理游戏规则
@@ -168,19 +173,19 @@ BOOL CRoomManager::UpdateRooms(CGameIocp *iocp)
 	for (DWORD i = 0; i < mRoomVectorDouble.size(); i++)
 	{
 		CRoom *Room = mRoomVectorDouble[i];
-		CBattleField* BattleField = Room->getBattleField();
 
-		// 战场不为空 则房间处于对战中
-		if (BattleField != NULL) {
-			// 刷新战场态势 获取当前对战结果
-			BATTLE_STATUS BattleStatus = BattleField->UpdateBattleFieldSituation();
-			// 若未决出胜负 向房间中所有玩家广播战场态势更新数据
-			if (BattleStatus == BATTLE_STATUS_IN_PROGRESSING || BattleStatus == BATTLE_STATUS_IN_PREPARING) {
-				Room->GameEnd(iocp); // 此处待改
-			}
-			// 若决出胜负 游戏结束
-			else {
+		// 房间正在进行对战时的处理
+		if (Room->GetStatus() == RM_GAME_IN_PROGRESS) {
 
+			//
+			CBattleField* BattleField = Room->getBattleField();
+
+			if (BattleField != NULL) {
+				BATTLE_STATUS BattleStatus = BattleField->UpdateBattleFieldSituation();
+				// 若未决出胜负 向房间中所有玩家广播战场态势更新数据
+				//if (BattleStatus == BATTLE_STATUS_IN_PROGRESSING || BattleStatus == BATTLE_STATUS_IN_PREPARING) {
+				//	Room->GameEnd(iocp); // 此处待改???????????????????
+				//}
 			}
 		}
 	}

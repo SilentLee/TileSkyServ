@@ -1,0 +1,56 @@
+[2017-11-30 12:10:57] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 12:10:57] # TileSky Game Server Running... #
+
+[2017-11-30 12:12:41] # New client connected : 0x5dd05040(0x5a4)
+
+[2017-11-30 12:13:35] # New client connected : 0x5d903040(0x5a0)
+
+[2017-11-30 12:14:9] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 12:14:47] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 12:22:49] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 12:22:49] # TileSky Game Server Running... #
+
+[2017-11-30 12:22:57] # New client connected : 0x5d11f040(0x5a4)
+
+[2017-11-30 12:23:0] # New client connected : 0x5cd0f040(0x5a0)
+
+[2017-11-30 12:23:6] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 12:23:24] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 12:25:59] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 12:26:0] # TileSky Game Server Running... #
+
+[2017-11-30 12:36:32] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 12:36:33] # TileSky Game Server Running... #
+

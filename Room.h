@@ -98,7 +98,7 @@ public:
 	inline INT getType(){CThreadSync Sync;return mType;}
 
 	inline void SetStatus(ROOM_STATUS status){CThreadSync Sync;mStatus = status;};
-	inline INT GetStatus(){CThreadSync Sync;return mStatus;};
+	inline ROOM_STATUS GetStatus(){ CThreadSync Sync; return mStatus; };
 
 	//////////////////////////////////////////////////////////////////////////
 	// 游戏管理函数

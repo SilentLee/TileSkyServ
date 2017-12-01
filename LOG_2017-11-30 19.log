@@ -1,0 +1,13 @@
+[2017-11-30 19:53:6] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 19:53:6] # TileSky Game Server Running... #
+
+[2017-11-30 19:54:28] # New client connected : 0x2e190040(0x3e0)
+

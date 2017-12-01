@@ -34,6 +34,7 @@
 
 using namespace std;
 
+// 1v1 斗场搜索对手
 VOID CGameIocp::onPT_BATTLE_1V1_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet)
 {
 	printf("PT_BATTLE_1V1_SEARCH_ROOM\n");
@@ -77,10 +78,10 @@ VOID CGameIocp::onPT_BATTLE_1V1_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE*
 
 	// 房间处于 等待 状态 函数返回
 	if (Room->GetStatus() == RM_WAITING) {
+		printf("RM_WAITING");
 		return;
-
-		// 房间处于 就绪 状态 通知各玩家开始游戏
 	}
+	 // 房间处于 就绪 状态 通知各玩家开始游戏
 	else if (Room->GetStatus() == RM_READY) {
 		Room->GameStart();
 	}

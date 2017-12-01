@@ -1,0 +1,58 @@
+[2017-11-30 13:0:0] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 13:0:5] # TileSky Game Server Running... #
+
+[2017-11-30 13:3:19] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 13:3:23] # TileSky Game Server Running... #
+
+[2017-11-30 13:3:46] # New client connected : 0x3b7e0040(0x408)
+
+[2017-11-30 13:7:38] # New client connected : 0x3b3e0040(0x404)
+
+[2017-11-30 13:7:47] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 13:7:49] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 13:10:20] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 13:10:21] # TileSky Game Server Running... #
+
+[2017-11-30 13:10:45] # New client connected : 0x3b3c0040(0x408)
+
+[2017-11-30 13:10:58] # New client connected : 0x3afc0040(0x404)
+
+[2017-11-30 13:11:18] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 13:11:21] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 13:11:26] # Client disconnected : 0x3b3c0040(0x408)
+
+[2017-11-30 13:35:33] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 13:35:35] # TileSky Game Server Running... #
+

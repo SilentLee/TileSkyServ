@@ -1,0 +1,69 @@
+[2017-11-30 20:11:50] # New client connected : 0x2dd90040(0x3dc)
+
+[2017-11-30 20:13:28] # Client disconnected : 0x2dd90040(0x3dc)
+
+[2017-11-30 20:13:33] # New client connected : 0x2dd90040(0x3dc)
+
+[2017-11-30 20:13:40] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:13:40] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:13:42] # Client disconnected : 0x2dd90040(0x3dc)
+
+[2017-11-30 20:13:50] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:13:50] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:13:52] # Client disconnected : 0x2e190040(0x3e0)
+
+[2017-11-30 20:54:42] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 20:54:42] # TileSky Game Server Running... #
+
+[2017-11-30 20:56:22] # New client connected : 0x2e3a0040(0x3e0)
+
+[2017-11-30 20:56:23] # New client connected : 0x2dfa0040(0x3dc)
+
+[2017-11-30 20:56:36] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:56:44] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:58:53] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 20:58:54] # TileSky Game Server Running... #
+
+[2017-11-30 20:58:59] # New client connected : 0x2e500040(0x3e0)
+
+[2017-11-30 20:59:3] # New client connected : 0x2e100040(0x3dc)
+
+[2017-11-30 20:59:19] # Read packet : PT_BATTLE_1V1_SEARCH_ROOM
+[2017-11-30 20:59:28] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 20:59:28] # TileSky Game Server Running... #
+
+[2017-11-30 20:59:40] # TileSky Game Server Startup #
+
+
++ Prepare Startup
+	- Winsock2 DLL loading		: [ ok ]
+	- MiniDump System Begin		: [ ok ]
++ GameIocp Startup
+	- GameIocp Begin		: [ ok ]
+
+[2017-11-30 20:59:41] # TileSky Game Server Running... #
+

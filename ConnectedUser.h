@@ -10,7 +10,7 @@
 #include "UserStruct.h"
 //#include "Room.h"
 
-typedef enum USER_STATUS
+typedef enum ENUM_USER_STATUS
 {
 	US_NONE = 0,
 	US_CHANNEL_ENTERING,
@@ -24,6 +24,12 @@ typedef enum USER_STATUS
 	AI_GAME_START,
 	AI_GAME_IN_PROGRESS,
 	AI_GAME_ENDING
+};
+
+typedef enum ENUM_SIDE_IN_GAME {
+	SIDE_NONE,
+	SIDE_BLUE,
+	SIDE_RED
 };
 
 // 此处简单定义一个 CRoom 类, 是否可以在不引用 CRoom 类头文件的情况下, 不影响文件中 CRoom 类的声明, 
@@ -58,8 +64,8 @@ private:
 
 
 private:
-	// 在游戏中属于哪一方
-	//SIDE_IN_GAME mSideInGame;
+	 // 在游戏中属于哪一方
+	ENUM_SIDE_IN_GAME mSideInGame;
 
 
 
@@ -90,6 +96,9 @@ public:
 
 	// 变量存取函数
 public:
+	void SetSideInGame(ENUM_SIDE_IN_GAME sideInGame){ mSideInGame = sideInGame; };
+	ENUM_SIDE_IN_GAME GetSideInGame(){ return mSideInGame; };
+
 	inline S_USER_ACCOUNT_INFO* GetUserAccountInfo(){return &mUserAccountInfo;}
 	inline S_USER_EQUIPMENT_INFO* GetUserEquipmentInfo(){return &mUserEquipmentInfo;}
 	inline S_USER_CHEST_INFO* GetUserChestInfo(){return &mUserChestInfo;}

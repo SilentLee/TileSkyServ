@@ -116,8 +116,8 @@ protected:
 
 private:
 	// 1v1 斗场中的协议处理函数
-	VOID onPT_BATTLE_1V1_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_BATTLE_1V1_ARRANGE_CARD(CConnectedUser* connectedUser, BYTE *packet);
+	VOID onPT_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet);
+	VOID onPT_BATTLE_ARRANGE_WEAPON(CConnectedUser* connectedUser, BYTE *packet);
 
 private:
 	// 协议处理函数

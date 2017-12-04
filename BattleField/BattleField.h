@@ -6,7 +6,7 @@ using namespace std;
 
 #define DEFALUT_GAME_TIME 30000
 
-typedef enum BATTLE_STATUS {
+typedef enum ENUM_BATTLE_STATUS {
 	BATTLE_STATUS_IN_PREPARING,
 	BATTLE_STATUS_IN_PROGRESSING,
 	BATTLE_STATUS_BLUE_WIN,
@@ -22,7 +22,7 @@ private:
 	vector<Weapon> mTroopsInRedTeam;
 
 	// 当前游戏状态
-	BATTLE_STATUS mStatus;
+	ENUM_BATTLE_STATUS mStatus;
 	// 剩余游戏时间
 	int mRemainGameTime;
 
@@ -31,17 +31,21 @@ public:
 	void Begin();
 	// 战场重置函数
 	void End();
+	// 对战开始
+	void BattleStart();
 public:
-	// 投入战场兵力
-	void InputTroops(int weaponType, int sideInGame, float posX, float posY);
+	// 蓝军兵力投入战场
+	void InputTroopsBlue(int weaponType, float posX, float posY);
+	// 红军兵力投入战场
+	void InputTroopsRed(int weaponType, float posX, float posY);
 	// 刷新战场态势 同时返回游戏状态
-	BATTLE_STATUS UpdateBattleFieldSituation();
+	ENUM_BATTLE_STATUS UpdateBattleFieldSituation();
 
 // 存取函数
 public:
 	// 当前战场状态
-	void SetStatus(BATTLE_STATUS status) { mStatus = status; };
-	BATTLE_STATUS GetStatus() { return mStatus; };
+	void SetStatus(ENUM_BATTLE_STATUS status) { mStatus = status; };
+	ENUM_BATTLE_STATUS GetStatus() { return mStatus; };
 	// 当前游戏计时
 	bool DecreaseRemainGameTime() { mRemainGameTime = max(0, mRemainGameTime--); return mRemainGameTime ? true : false; };
 	int GetRemainGameTime() { return mRemainGameTime; };

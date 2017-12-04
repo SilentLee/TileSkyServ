@@ -20,6 +20,11 @@
 #include "DOUBLE_BATTLE_PT_ReadPacket.h"
 #include "DOUBLE_BATTLE_PT_WritePacket.h"
 
+#include "BATTLE_Protocol.h"
+#include "BATTLE_PT_Structure.h"
+#include "BATTLE_PT_ReadPacket.h"
+#include "BATTLE_PT_WritePacket.h"
+
 #include "Room.h"
 #include "RoomManager.h"
 #include "ConnectedUser.h"
@@ -27,7 +32,7 @@
 #include "GameIocp.h"
 
 #include "ErrorCode.h"
-#include "GameCtrlParams.h"
+//#include "GameCtrlParams.h"
 
 extern S_DOUBLE_BATTLE_ROOM_USER GetDoubleBattleRoomUserPacket 
 	(S_USER_ACCOUNT_INFO* userAccountInfo, S_USER_EQUIPMENT_INFO* userEquipmentInfo);
@@ -122,11 +127,13 @@ bool CRoom::JoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType)
 	if (mUsersInBlueTeam.size() < capacityOfTeam) {
 		mUsersInBlueTeam.push_back(connectedUser);
 		connectedUser->SetEnteredRoom(this);
+		connectedUser->SetSideInGame(SIDE_BLUE);
 	}
 	// 若蓝队人数已达上限 将玩家分配到红队
 	else if (mUsersInRedTeam.size() < capacityOfTeam) {
 		mUsersInRedTeam.push_back(connectedUser);
 		connectedUser->SetEnteredRoom(this);
+		connectedUser->SetSideInGame(SIDE_RED);
 	}
 
 	// ????????????????????????????????????????????????????
@@ -146,21 +153,21 @@ bool CRoom::JoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType)
 	return true;
 }
 
-void CRoom::SetUserStatusAll(USER_STATUS status)
+void CRoom::SetUserStatusAll(ENUM_USER_STATUS status)
 {
 	CThreadSync Sync;
 	
-	//list<CConnectedUser*>::iterator iter;
-	//
-	//for(iter = mUsersInBlueTeam.begin(); iter != mUsersInRedTeam.end(); iter++) {
-	//	CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
-	//	connectedUser->SetStatus(status);
-	//}
+	list<CConnectedUser*>::iterator iter;
+	
+	for(iter = mUsersInBlueTeam.begin(); iter != mUsersInBlueTeam.end(); iter++) {
+		CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
+		connectedUser->SetStatus(status);
+	}
 
-	//for (iter = mUsersInRedTeam.begin(); iter != mUsersInRedTeam.end(); iter++) {
-	//	CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
-	//	connectedUser->SetStatus(status);
-	//}
+	for (iter = mUsersInRedTeam.begin(); iter != mUsersInRedTeam.end(); iter++) {
+		CConnectedUser* connectedUser = (CConnectedUser*)(*iter);
+		connectedUser->SetStatus(status);
+	}
 }
 
  // 用户退出房间时调用的函数
@@ -180,10 +187,10 @@ bool CRoom::LeaveRoom(bool isDisconnected, CGameIocp *iocp, CConnectedUser *conn
 
 	list<CConnectedUser*>::iterator iter;
 
-	// 若玩家状态为进入房间 并未开始游戏
-	// 在红蓝两队列表中检索当前玩家并删除
+	// 若玩家当前在游戏房间内
+	// 在红蓝两队列表中删除 CConnectedUser 指针
 	// 通知房间内其他玩家 有人退出当前房间
-	if(connectedUser->GetStatus() <= US_ROOM_ENTERED) {
+	if(connectedUser->GetStatus() <= US_GAME_IN_PROGRESS) {
 
 		for(iter = mUsersInBlueTeam.begin(); iter != mUsersInBlueTeam.end(); ++iter) 
 		{
@@ -219,11 +226,12 @@ bool CRoom::LeaveRoom(bool isDisconnected, CGameIocp *iocp, CConnectedUser *conn
 	} 
 	// 若此时玩家状态为进行游戏 此时不能简单退出房间
 	// 应由AI接管游戏 或 等待游戏结束再退出房间
-	else if(connectedUser->GetStatus() <= US_GAME_IN_PROGRESS){
+	// 代码待完善???????????????????????????????????????????????????
+	//else if(connectedUser->GetStatus() <= US_GAME_IN_PROGRESS){
 
-		connectedUser->SetStatus(connectedUser->GetStatus() + 4); // 游戏开始后用户断开连接, 由 AI 接管
-		return true;
-	}
+	//	connectedUser->SetStatus(connectedUser->GetStatus() + 4); // 游戏开始后用户断开连接, 由 AI 接管
+	//	return true;
+	//}
 
 	return false;
 }
@@ -296,14 +304,17 @@ bool CRoom::GameStart(void)
 	}
 
 	// 通知各玩家游戏开始 在游戏开始消息成功发送之前 不能将房间状态 mStatus 更改为 RM_GAME_IN_PROGRESS
-	S_PT_DOUBLE_BATTLE_START_GAME_M ptDoubleBattleStartGameM;
-	memset(&ptDoubleBattleStartGameM, 0 , sizeof(ptDoubleBattleStartGameM));
-	time(&ptDoubleBattleStartGameM.START_TIME);
-	ptDoubleBattleStartGameM.ROOM_STATUS = GetStatus();
-	WriteAll(PT_DOUBLE_BATTLE_START_GAME_M, WriteBuffer, WRITE_PT_DOUBLE_BATTLE_START_GAME_M(WriteBuffer, ptDoubleBattleStartGameM));
+	S_PT_BATTLE_START_GAME_M ptBattleStartGameM;
+	memset(&ptBattleStartGameM, 0, sizeof(S_PT_BATTLE_START_GAME_M));
+	time(&ptBattleStartGameM.START_TIME);
+	ptBattleStartGameM.ROOM_STATUS = GetStatus();
+	WriteAll(PT_BATTLE_START_GAME_M, WriteBuffer, WRITE_PT_BATTLE_START_GAME_M(WriteBuffer, ptBattleStartGameM));
 
 	//// 游戏开始消息发送成功后 将房间状态更改为 RM_GAME_IN_PROGRESS
 	SetStatus(RM_GAME_IN_PROGRESS);
+
+	// 将战场设置为游戏开始
+	mBattleField->BattleStart();
 
 	return true;
 }
@@ -316,7 +327,7 @@ bool CRoom::GameEnd(CGameIocp *iocp)
 {
 	CThreadSync Sync;
 
-	mStatus = RM_GAME_ENDING;
+	mStatus = RM_GAME_ENDED;
 	mIsGameStarted = false;
 
 	BYTE	WriteBuffer[MAX_BUFFER_LENGTH]	= {0,};
@@ -354,41 +365,4 @@ bool CRoom::GameEnd(CGameIocp *iocp)
 	mBattleField = NULL;
 
 	return true;
-}
-
-void CRoom::BroadcastBattleSituation(CGameIocp *iocp)
-{
-	CThreadSync Sync;
-
-	// 获取剩余游戏时间
-	int RemainGameTime = mBattleField->GetRemainGameTime();
-
-	// 获取战场中红蓝双方兵力存储动态数组的首地址
-	Weapon* HeaderOfTroopsInBlueTeam = mBattleField->getTroopInBlueTeam(0);
-	Weapon* HeaderOfTroopsInRedTeam = mBattleField->getTroopInRedTeam(0);
-
-	// 获取战场中红蓝双方兵力存储动态数组的大小
-	int sizeOfTroopsInBlueTeam = mBattleField->getCountOfTroopsInBlueTeam();
-	int sizeOfTroopsInRedTeam = mBattleField->getCountOfTroopsInRedTeam();
-
-	// 创建广播数据缓冲区
-	BYTE PacketBuffer[MAX_BUFFER_LENGTH] = { 0, };
-	// 设置广播协议号
-	int Protocol = 111; // 此处协议号需要重新定义?????????????????????????
-	// 计算广播数据包长度
-	int PacketLength = sizeof(int) + sizeof(int) + sizeof(int) + sizeof(Weapon) * sizeOfTroopsInBlueTeam + sizeof(Weapon) * sizeOfTroopsInRedTeam;
-
-	// 将剩余游戏时间写入缓冲区
-	memcpy(PacketBuffer, &RemainGameTime, sizeof(int));
-	// 将蓝方兵力动态存储数组大小写入缓冲区
-	memcpy(PacketBuffer + sizeof(int), &sizeOfTroopsInBlueTeam, sizeof(int));
-	// 将红方兵力动态存储数组大小写入缓冲区
-	memcpy(PacketBuffer + sizeof(int) + sizeof(int), &sizeOfTroopsInRedTeam, sizeof(int));
-	// 将蓝方兵力动态存储数组写入缓冲区
-	memcpy(PacketBuffer + sizeof(int) + sizeof(int) + sizeof(int), HeaderOfTroopsInBlueTeam, sizeof(Weapon) * sizeOfTroopsInBlueTeam);
-	// 将红方兵力动态存储数组写入缓冲区
-	memcpy(PacketBuffer + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(Weapon) * sizeOfTroopsInBlueTeam, HeaderOfTroopsInRedTeam, sizeof(Weapon) * sizeOfTroopsInRedTeam);
-
-	// 向房间内所有用户发送广播数据
-	WriteAll(Protocol, PacketBuffer, PacketLength);
 }

@@ -17,6 +17,8 @@ CConnectedUser::CConnectedUser(void)
 	ZeroMemory(mVirtualAddress, sizeof(mVirtualAddress));
 	ZeroMemory(mRealAddress, sizeof(mRealAddress));
 
+	mSideInGame = SIDE_NONE;
+
 	mVirtualPort = 0;
 	mRealPort = 0;
 	mStatus = US_NONE;
@@ -43,6 +45,8 @@ bool CConnectedUser::Begin(void)
 	ZeroMemory(mVirtualAddress, sizeof(mVirtualAddress));
 	ZeroMemory(mRealAddress, sizeof(mRealAddress));
 
+	mSideInGame = SIDE_NONE;
+
 	mVirtualPort = 0;
 	mRealPort = 0;
 	mStatus = US_NONE;
@@ -67,6 +71,8 @@ bool CConnectedUser::End(void)
 
 	ZeroMemory(mVirtualAddress, sizeof(mVirtualAddress));
 	ZeroMemory(mRealAddress, sizeof(mRealAddress));
+
+	mSideInGame = SIDE_NONE;
 
 	mVirtualPort = 0;
 	mRealPort = 0;
@@ -114,6 +120,8 @@ bool CConnectedUser::GameEnd()
 	mStatus = US_CHANNEL_ENTERED; // 用户当前状态
 	mEnteredRoom = NULL; // 用户当前登录房间的地址
 
+	mSideInGame = SIDE_NONE;
+
 	mNumShotDown = 0;
 
 	return true;
@@ -123,11 +131,17 @@ bool CConnectedUser::Reload(SOCKET listenSocket)
 {
 	CThreadSync Sync;
 
+	printf("CConnectedUser::Reload\n");
+
+	// 结束当前 CConnectedUser
 	End();
 
+	// 重新初始化 CConnectedUser
 	if (!Begin())
 		return false;
 
+	// 重新设置 CConnectedUser 网络配置
+	// 等待下一个连接用户
 	if (!CNetworkSession::Accept(listenSocket))
 		return false;
 

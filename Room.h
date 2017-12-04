@@ -60,18 +60,17 @@ public:
 	bool					End(void);
 
 	// 战场 BattleField 的存取函数
-	void setBattleField(CBattleField* battleField) { mBattleField = battleField; };
-	CBattleField* getBattleField() { return mBattleField; };
+	void SetBattleField(CBattleField* battleField) { mBattleField = battleField; };
+	CBattleField* GetBattleField() { return mBattleField; };
 
 
 	// 用户进入房间 或 离开房间时调用的函数
-	// 1v1
 	bool					JoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType);
 	bool					LeaveRoom(bool isDisconnected, CGameIocp *iocp, CConnectedUser *connectedUser);
 
 
 	// 设置房间中所有玩家状态
-	void					SetUserStatusAll(USER_STATUS status);
+	void					SetUserStatusAll(ENUM_USER_STATUS status);
 	// 向房间内所有用户传送数据包时使用的函数
 	bool					WriteAll(DWORD protocol, BYTE *packet, DWORD packetLength);
 
@@ -95,13 +94,14 @@ public:
 	inline USHORT			GetCurrentUserCount(void){CThreadSync Sync;return (mUsersInBlueTeam.size() + mUsersInRedTeam.size());}
 
 	inline void SetType(ROOM_TYPE type){CThreadSync Sync;mType = type;}
-	inline INT getType(){CThreadSync Sync;return mType;}
+	inline INT GetType(){CThreadSync Sync;return mType;}
 
 	inline void SetStatus(ROOM_STATUS status){CThreadSync Sync;mStatus = status;};
 	inline ROOM_STATUS GetStatus(){ CThreadSync Sync; return mStatus; };
 
 	//////////////////////////////////////////////////////////////////////////
 	// 游戏管理函数
-	void BroadcastBattleSituation(CGameIocp *iocp);
+	void BroadcastBattleSituation();
+	ROOM_STATUS UpdateGameProcess();
 	//////////////////////////////////////////////////////////////////////////
 };

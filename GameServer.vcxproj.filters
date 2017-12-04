@@ -129,23 +129,23 @@
     <ClInclude Include="BattleFieldParams.h">
       <Filter>Params</Filter>
     </ClInclude>
-    <ClInclude Include="..\Packet\BATTLE_1V1_Protocol.h">
-      <Filter>Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Packet\BATTLE_1V1_PT_ReadPacket.h">
-      <Filter>Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Packet\BATTLE_1V1_PT_Structure.h">
-      <Filter>Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Packet\BATTLE_1V1_PT_WritePacket.h">
-      <Filter>Packet</Filter>
-    </ClInclude>
     <ClInclude Include="BattleField\BattleField.h">
       <Filter>BattleField</Filter>
     </ClInclude>
     <ClInclude Include="BattleField\Weapons\Weapon.h">
       <Filter>BattleField\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_Protocol.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_PT_ReadPacket.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_PT_Structure.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Packet\BATTLE_PT_WritePacket.h">
+      <Filter>Packet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,14 +203,17 @@
     <ClCompile Include="TcpUserProtocolProc.cpp">
       <Filter>GameIocp</Filter>
     </ClCompile>
-    <ClCompile Include="TcpBattle1V1ProtocolProc.cpp">
-      <Filter>GameIocp</Filter>
-    </ClCompile>
     <ClCompile Include="BattleField\BattleField.cpp">
       <Filter>BattleField</Filter>
     </ClCompile>
     <ClCompile Include="BattleField\Weapons\Weapon.cpp">
       <Filter>BattleField\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpBattleProtocolProc.cpp">
+      <Filter>GameIocp</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomGameProc.cpp">
+      <Filter>Room</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

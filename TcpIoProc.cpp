@@ -25,10 +25,10 @@
 #include "DOUBLE_BATTLE_PT_ReadPacket.h"
 #include "DOUBLE_BATTLE_PT_WritePacket.h"
 
-#include "BATTLE_1V1_Protocol.h"
-#include "BATTLE_1V1_PT_ReadPacket.h"
-#include "BATTLE_1V1_PT_Structure.h"
-#include "BATTLE_1V1_PT_WritePacket.h"
+#include "BATTLE_Protocol.h"
+#include "BATTLE_PT_ReadPacket.h"
+#include "BATTLE_PT_Structure.h"
+#include "BATTLE_PT_WritePacket.h"
 
 #include "Room.h"
 #include "RoomManager.h"
@@ -53,12 +53,12 @@ VOID CGameIocp::OnIoRead(VOID *object, DWORD dataLength)
 		{
 			switch(Protocol)
 			{
-			case PT_BATTLE_1V1_SEARCH_ROOM:
-				onPT_BATTLE_1V1_SEARCH_ROOM(ConnectedUser, Packet);
+			case PT_BATTLE_SEARCH_ROOM:
+				onPT_BATTLE_SEARCH_ROOM(ConnectedUser, Packet);
 				break;
 
-			case PT_BATTLE_1V1_ARRANGE_CARD:
-				onPT_BATTLE_1V1_ARRANGE_CARD(ConnectedUser, Packet);
+			case PT_BATTLE_ARRANGE_WEAPON:
+				onPT_BATTLE_ARRANGE_WEAPON(ConnectedUser, Packet);
 				break;
 			//// 用户账户注册 登录 信息更新数据包处理
 			//// 1. 游客注册
@@ -305,19 +305,25 @@ VOID CGameIocp::OnIoDisconnected(VOID *object)
 
 		if (Room)
 			Room->LeaveRoom(TRUE, this, ConnectedUser);
-		//
+
+		// 若当前房间已经没有玩家
+		// 结束当前房间内的游戏
+		if (!Room->GetCurrentUserCount()) {
+			Room->GameEnd(this);
+		}
 	}
 
 	// 若当前用户连接被 AI 接管, 在用户断开连接时并不立刻重置网络连接, 需等本局游戏结束后再对网络连接进行重置
-	if(ConnectedUser->GetStatus() >= AI_GAME_START && ConnectedUser->GetStatus() <= AI_GAME_ENDING) {
-		return;
-	}
+	// 此处代码待完善?????????????????????????????????????????????????????????????????????????????????
+	//if(ConnectedUser->GetStatus() >= AI_GAME_START && ConnectedUser->GetStatus() <= AI_GAME_ENDING) {
+	//	return;
+	//}
 
 	// 用户断开连接后, 将该 ConnectedUser 重新设置为 Accept 状态, 等待下一个用户连接
 	if (!ConnectedUser->Reload(mListenSession.GetSocket()))
 	{
 		CLog::WriteLog(_T("! OnIoDisconnected : ConnectedUser->Reload"));
-
+		// 若 CConnectedUser 重新载入失败 结束当前 iocp 对象
 		End();
 
 		return;

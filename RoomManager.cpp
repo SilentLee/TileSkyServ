@@ -177,15 +177,13 @@ BOOL CRoomManager::UpdateRooms(CGameIocp *iocp)
 		// 房间正在进行对战时的处理
 		if (Room->GetStatus() == RM_GAME_IN_PROGRESS) {
 
-			//
-			CBattleField* BattleField = Room->getBattleField();
+			// 刷新房间游戏进程
+			// 同时读取房间当前状态 检测游戏是否结束
+			ROOM_STATUS RoomStatus = Room->UpdateGameProcess();
 
-			if (BattleField != NULL) {
-				BATTLE_STATUS BattleStatus = BattleField->UpdateBattleFieldSituation();
-				// 若未决出胜负 向房间中所有玩家广播战场态势更新数据
-				//if (BattleStatus == BATTLE_STATUS_IN_PROGRESSING || BattleStatus == BATTLE_STATUS_IN_PREPARING) {
-				//	Room->GameEnd(iocp); // 此处待改???????????????????
-				//}
+			// 若游戏结束 执行 Room->GameEnd()
+			if (RoomStatus == RM_GAME_ENDING) {
+				Room->GameEnd(iocp);
 			}
 		}
 	}

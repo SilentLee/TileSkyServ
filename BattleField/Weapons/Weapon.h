@@ -4,8 +4,8 @@
 
 using namespace std;
 
-typedef enum WEAPON_TYPE {
-	NO_WP_TYPE = 0,
+typedef enum ENUM_WEAPON_TYPE {
+	WP_TYPE_NONE = 0,
 
 	/************以下为建筑类型武器 不能移动*************/
 	WP_TYPE_ANTI_AIRCRAFT_MISSILE,
@@ -24,20 +24,20 @@ typedef enum WEAPON_TYPE {
 	WP_TYPE_END
 };
 
-typedef enum STATUS_WP {
+typedef enum ENMU_STATUS_WP {
 	STATUS_WP_NONE = 0,
 	STATUS_WP_MOVE_FORWARD,
 	STATUS_WP_STOP,
 	STATUS_WP_ATTACK
 };
 
-typedef enum SIDE_IN_GAME {
-	SIDE_NONE,
-	SIDE_BLUE,
-	SIDE_RED
+typedef enum ENUM_TROOPS {
+	TROOPS_NONE,
+	TROOPS_BLUE,
+	TROOPS_RED
 };
 
-typedef struct _PROPERTY_WP
+typedef struct _S_PROPERTY_WP
 {
 	int WP_TYPE;
 	int LEVEL;
@@ -46,7 +46,7 @@ typedef struct _PROPERTY_WP
 	int DP;
 	int HP;
 	int RANGE_FIRE;
-} PROPERTY_WP;
+} S_PROPERTY_WP;
 
 class Weapon
 {
@@ -56,13 +56,13 @@ public:
 	~Weapon();
 
 	// 初始化函数
-	void init(int sideInGame, PROPERTY_WP propertyWp, float posX, float posY);
+	void init(ENUM_TROOPS troops, S_PROPERTY_WP propertyWp, float posX, float posY);
 
 protected:
-	int mSideInGame;
+	int mTroopsIn;
 
 	// 武器型号
-	PROPERTY_WP mPropertyWp;
+	S_PROPERTY_WP mPropertyWp;
 
 	// 武器位置
 	float mPosX;
@@ -73,20 +73,20 @@ protected:
 
 public:
 	// 存取函数
-	void setSideInGame(int sideInGame);
-	void setProperty(PROPERTY_WP propertyWp);
-	void setPosX(float posX);
-	void setPosY(float posY);
-	void setStatus(int status);
+	void SetTroopsIn(int troopsIn){ mTroopsIn = troopsIn; };
+	void SetProperty(S_PROPERTY_WP propertyWp){ memcpy(&mPropertyWp, &propertyWp, sizeof(S_PROPERTY_WP)); };
+	void SetPosX(float posX){ mPosX = posX; };
+	void SetPosY(float posY){ mPosY = posY; };
+	void SetStatus(int status){ mStatus = status; };
 
-	int getSideInGame();
-	PROPERTY_WP getProperty();
-	float getPosX();
-	float getPosY();
-	int getStatus();
+	int GetTroopsIn(){ return mTroopsIn; };
+	S_PROPERTY_WP GetProperty(){ return mPropertyWp; };
+	float GetPosX(){ return mPosX; };
+	float GetPosY(){ return mPosY; };
+	int GetStatus(){ return mStatus; };
 
 public:
-	void move();
-	void attack();
-	int beAttacked(int DP);
+	void Move();
+	void Attack();
+	int BeAttacked(int DP);
 };

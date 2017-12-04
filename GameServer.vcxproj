@@ -150,10 +150,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Packet\BATTLE_1V1_Protocol.h" />
-    <ClInclude Include="..\Packet\BATTLE_1V1_PT_ReadPacket.h" />
-    <ClInclude Include="..\Packet\BATTLE_1V1_PT_Structure.h" />
-    <ClInclude Include="..\Packet\BATTLE_1V1_PT_WritePacket.h" />
+    <ClInclude Include="..\Packet\BATTLE_Protocol.h" />
+    <ClInclude Include="..\Packet\BATTLE_PT_ReadPacket.h" />
+    <ClInclude Include="..\Packet\BATTLE_PT_Structure.h" />
+    <ClInclude Include="..\Packet\BATTLE_PT_WritePacket.h" />
     <ClInclude Include="..\Packet\DoubleBattleProtocol.h" />
     <ClInclude Include="..\Packet\DOUBLE_BATTLE_PT_ReadPacket.h" />
     <ClInclude Include="..\Packet\DOUBLE_BATTLE_PT_Structure.h" />
@@ -193,7 +193,7 @@
     <ClCompile Include="DBProcRegist.cpp" />
     <ClCompile Include="GameIocp.cpp" />
     <ClCompile Include="GmProc.cpp" />
-    <ClCompile Include="TcpBattle1V1ProtocolProc.cpp" />
+    <ClCompile Include="TcpBattleProtocolProc.cpp" />
     <ClCompile Include="TcpIoProc.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="MySqlResReader.cpp" />
@@ -210,6 +210,7 @@
     <ClCompile Include="TcpPurchaseProtocolProc.cpp" />
     <ClCompile Include="TcpUserProtocolProc.cpp" />
     <ClCompile Include="UserStruct.cpp" />
+    <ClCompile Include="RoomGameProc.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

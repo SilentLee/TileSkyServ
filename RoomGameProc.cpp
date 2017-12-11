@@ -75,21 +75,17 @@ void CRoom::BroadcastBattleSituation()
 	if (SizeOfTroopsInBlueTeam > 0) {
 		// 获取蓝方兵力动态数组首地址
 		Weapon* HeaderOfTroopsInBlueTeam = mBattleField->getTroopInBlueTeam(0);
-		// 写入数据长度
-		memcpy(PacketBufferTroopsInBlueTeam, &SizeOfTroopsInBlueTeam, sizeof(int));
 		// 写入数据
 		memcpy(PacketBufferTroopsInBlueTeam, HeaderOfTroopsInBlueTeam, sizeof(Weapon)* SizeOfTroopsInBlueTeam);
 		// 计算蓝方兵力数据包长度
-		LengthOfPacketBufferTroopsInBlueTeam = sizeof(int)+sizeof(Weapon)* SizeOfTroopsInBlueTeam;
+		LengthOfPacketBufferTroopsInBlueTeam = sizeof(Weapon)* SizeOfTroopsInBlueTeam;
 	}
 	// 若当前存储蓝方兵力的动态数组长度等于 0
 	// 不能访问该数组 会产生访问越界
 	// 所以只存储数组长度 即 0
 	else {
-		// 只写入数据长度 0
-		memcpy(PacketBufferTroopsInBlueTeam, &SizeOfTroopsInBlueTeam, sizeof(int));
 		// 计算蓝方兵力数据包长度
-		LengthOfPacketBufferTroopsInBlueTeam = sizeof(int);
+		LengthOfPacketBufferTroopsInBlueTeam = 0;
 	}
 
 	// 打包红方战场中的现有兵力
@@ -103,42 +99,59 @@ void CRoom::BroadcastBattleSituation()
 	if (SizeOfTroopsInRedTeam > 0) {
 		// 获取红方兵力动态数组首地址
 		Weapon* HeaderOfTroopsInRedTeam = mBattleField->getTroopInRedTeam(0);
-		// 写入数据长度
-		memcpy(PacketBufferTroopsInRedTeam, &SizeOfTroopsInRedTeam, sizeof(int));
 		// 写入数据
 		memcpy(PacketBufferTroopsInRedTeam, HeaderOfTroopsInRedTeam, sizeof(Weapon)* SizeOfTroopsInRedTeam);
 		// 计算红方兵力数据包长度
-		LengthOfPacketBufferTroopsInRedTeam = sizeof(int)+sizeof(Weapon)* SizeOfTroopsInRedTeam;
+		LengthOfPacketBufferTroopsInRedTeam = sizeof(Weapon)* SizeOfTroopsInRedTeam;
 	}
 	// 若当前存储蓝方兵力的动态数组长度等于 0
 	// 不能访问该数组 会产生访问越界
 	// 所以只存储数组长度 即 0
 	else {
-		// 只写入数据长度 0
-		memcpy(PacketBufferTroopsInRedTeam, &SizeOfTroopsInRedTeam, sizeof(int));
 		// 计算红方兵力数据包长度
-		LengthOfPacketBufferTroopsInRedTeam = sizeof(int) + sizeof(int)* SizeOfTroopsInRedTeam;
+		LengthOfPacketBufferTroopsInRedTeam = 0;
 	}
 
-	// 获取剩余游戏时间
-	int RemainGameTime = mBattleField->GetRemainGameTime();
-	// 创建通信协议
-	int Protocol = PT_BATTLE_UPDATE_SITUATION_M;
-	// 创建发送数据缓冲区
-	BYTE PacketBuffer[4000] = {0, };
-	// 计算发送数据包长度
-	int LengthOfPacket = sizeof(int) + LengthOfPacketBufferTroopsInBlueTeam + LengthOfPacketBufferTroopsInRedTeam;
-	// 写入当前游戏时间
-	memcpy(PacketBuffer, &RemainGameTime, sizeof(int));
-	// 复制蓝军兵力数据
-	memcpy(PacketBuffer + sizeof(int), PacketBufferTroopsInBlueTeam, LengthOfPacketBufferTroopsInBlueTeam);
-	// 复制红军兵力数据
-	memcpy(PacketBuffer + sizeof(int) + LengthOfPacketBufferTroopsInBlueTeam, PacketBufferTroopsInRedTeam, LengthOfPacketBufferTroopsInRedTeam);
+	S_PT_BATTLE_UPDATE_SITUATION_M ptBattleUpdateSituationM;
+	memset(&ptBattleUpdateSituationM, 0, sizeof(S_PT_BATTLE_UPDATE_SITUATION_M));
+	// 写入当前游戏剩余时间
+	ptBattleUpdateSituationM.REMAINING_GAME_TIME = mBattleField->GetRemainGameTime();
+	// 写入蓝方兵力数据长度
+	ptBattleUpdateSituationM.BLUE_TROOPS_DATA_LENGTH = SizeOfTroopsInBlueTeam * sizeof(Weapon);
+	// 写入红方兵力数据长度
+	ptBattleUpdateSituationM.RED_TROOPS_DATA_LENGTH = SizeOfTroopsInRedTeam * sizeof(Weapon);
+	// 写入蓝方兵力行为数据长度
+	ptBattleUpdateSituationM.BLUE_TROOPS_ACTION_DATA_LENGTH = 0;
+	// 写入红方兵力行为数据长度
+	ptBattleUpdateSituationM.RED_TROOPS_ACTION_DATA_LENGTH = 0;
+	// 写入蓝方兵力数据
+	memcpy(ptBattleUpdateSituationM.DATA, PacketBufferTroopsInBlueTeam, LengthOfPacketBufferTroopsInBlueTeam);
+	// 写入红方兵力数据
+	memcpy(ptBattleUpdateSituationM.DATA + LengthOfPacketBufferTroopsInBlueTeam, PacketBufferTroopsInRedTeam, LengthOfPacketBufferTroopsInRedTeam);
+	// 此处应写入蓝方兵力行为数据
+	//
+	// 此处应写入红方兵力行为数据
+	//
 
-	printf("BroadcastBattleSituation PacketLength = %d", LengthOfPacket);
+	// 向房间内玩家广播数据
+	WriteAll(PT_BATTLE_UPDATE_SITUATION_M, (BYTE*)&ptBattleUpdateSituationM, sizeof(S_PT_BATTLE_UPDATE_SITUATION_M));
 
-	// 向房间内所有用户发送数据
-	WriteAll(Protocol, PacketBuffer, LengthOfPacket);
+
+	//// 创建发送数据缓冲区
+	//BYTE PacketBuffer[4000] = {0, };
+	//// 计算发送数据包长度
+	//int LengthOfPacket = sizeof(int) + LengthOfPacketBufferTroopsInBlueTeam + LengthOfPacketBufferTroopsInRedTeam;
+	//// 写入当前游戏时间
+	//memcpy(PacketBuffer, &RemainGameTime, sizeof(int));
+	//// 复制蓝军兵力数据
+	//memcpy(PacketBuffer + sizeof(int), PacketBufferTroopsInBlueTeam, LengthOfPacketBufferTroopsInBlueTeam);
+	//// 复制红军兵力数据
+	//memcpy(PacketBuffer + sizeof(int) + LengthOfPacketBufferTroopsInBlueTeam, PacketBufferTroopsInRedTeam, LengthOfPacketBufferTroopsInRedTeam);
+
+	//printf("BroadcastBattleSituation PacketLength = %d", LengthOfPacket);
+
+	//// 向房间内所有用户发送数据
+	//WriteAll(Protocol, PacketBuffer, LengthOfPacket);
 
 
 

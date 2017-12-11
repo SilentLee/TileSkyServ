@@ -24,7 +24,7 @@ typedef enum ENUM_WEAPON_TYPE {
 	WP_TYPE_END
 };
 
-typedef enum ENMU_STATUS_WP {
+typedef enum ENUM_STATUS_WP {
 	STATUS_WP_NONE = 0,
 	STATUS_WP_MOVE_FORWARD,
 	STATUS_WP_STOP,
@@ -39,7 +39,7 @@ typedef enum ENUM_TROOPS {
 
 typedef struct _S_PROPERTY_WP
 {
-	int WP_TYPE;
+	ENUM_WEAPON_TYPE WP_TYPE;
 	int LEVEL;
 	float SPEED;
 	int RANGE_DEC;

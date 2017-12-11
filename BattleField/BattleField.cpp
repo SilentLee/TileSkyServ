@@ -42,13 +42,13 @@ void CBattleField::BattleStart()
 }
 
 // 蓝军兵力投入战场
-void CBattleField::InputTroopsBlue(int weaponType, float posX, float posY)
+void CBattleField::InputTroopsBlue(ENUM_WEAPON_TYPE weaponType, float posX, float posY)
 {
 	printf("BattleField::inputTroopsBlue\n");
 
 	// 测试时使用的武器属性参数 
 	// 应当更改为用户从数据库中读取的参数
-	int WP_TYPE = weaponType;
+	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
 	int LEVEL = 1;
 	float SPEED = 10;
 	int RANGE_DEC = 5;
@@ -64,13 +64,13 @@ void CBattleField::InputTroopsBlue(int weaponType, float posX, float posY)
 }
 
 // 红军兵力投入战场
-void CBattleField::InputTroopsRed(int weaponType, float posX, float posY)
+void CBattleField::InputTroopsRed(ENUM_WEAPON_TYPE weaponType, float posX, float posY)
 {
 	printf("BattleField::inputTroopsRed\n");
 
 	// 测试时使用的武器属性参数 
 	// 应当更改为用户从数据库中读取的参数
-	int WP_TYPE = weaponType;
+	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
 	int LEVEL = 1;
 	float SPEED = 10;
 	int RANGE_DEC = 5;

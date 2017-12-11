@@ -1,9 +1,32 @@
-﻿生成启动时间为 2017/12/4 16:53:43。
+﻿生成启动时间为 2017/12/11 9:44:38。
      1>项目“D:\TileSky3.0_Demo\TSSln20171031\proj.win32\TileSkyServ\GameServer.vcxproj”在节点 2 上(Build 个目标)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GameServer.vcxproj, TileSkyServ111.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\TileSkyServ\BattleField /I..\TileSkyServ\BattleField\Weapons /I..\LowLib /I..\Packet /I"C:\Program Files (x86)\MySQL\MySQL Connector C 6.1.3\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_NON_CONFORMING_SWPRINTFS /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\TileSkyServ.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt RoomGameProc.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\TileSkyServ\BattleField /I..\TileSkyServ\BattleField\Weapons /I..\LowLib /I..\Packet /I"C:\Program Files (x86)\MySQL\MySQL Connector C 6.1.3\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_NON_CONFORMING_SWPRINTFS /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\TileSkyServ.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BattleField\BattleField.cpp BattleField\Weapons\Weapon.cpp ConnectedUser.cpp ConnectedUserManager.cpp GameIocp.cpp GameServer.cpp Room.cpp RoomGameProc.cpp RoomManager.cpp TcpBattleProtocolProc.cpp TcpIoProc.cpp TcpPurchaseProtocolProc.cpp TcpUserProtocolProc.cpp
+         BattleField.cpp
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\battlefield\battlefield.cpp(94): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\battlefield\battlefield.cpp(99): warning C4018: “<”: 有符号/无符号不匹配
+         正在生成代码...
+         正在编译...
+         TcpUserProtocolProc.cpp
+         TcpPurchaseProtocolProc.cpp
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\tcppurchaseprotocolproc.cpp(1170): warning C4244: “参数”: 从“time_t”转换到“UINT”，可能丢失数据
+         TcpIoProc.cpp
+         TcpBattleProtocolProc.cpp
+         RoomManager.cpp
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\roommanager.cpp(136): warning C4018: “<”: 有符号/无符号不匹配
          RoomGameProc.cpp
+         Room.cpp
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\room.cpp(127): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\room.cpp(133): warning C4018: “<”: 有符号/无符号不匹配
+         GameServer.cpp
+         GameIocp.cpp
+         ConnectedUserManager.cpp
+         ConnectedUser.cpp
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\connecteduser.cpp(61): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
+     1>d:\tilesky3.0_demo\tssln20171031\proj.win32\tileskyserv\connecteduser.cpp(86): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
+         Weapon.cpp
+         正在生成代码...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\TileSky3.0_Demo\TSSln20171031\proj.win32\Debug\TileSkyServ.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\MySQL\MySQL Connector C 6.1.3\lib" /LIBPATH:"C:\Program Files (x86)\MySQL\MySQL Connector C 6.1.3\lib\debug" ws2_32.lib Mswsock.lib ../Debug/LowLib.lib libmysql.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\TileSky3.0_Demo\TSSln20171031\proj.win32\Debug\TileSkyServ.pdb" /SUBSYSTEM:CONSOLE /STACK:"52428800" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\TileSky3.0_Demo\TSSln20171031\proj.win32\Debug\TileSkyServ.lib" /MACHINE:X86 Debug\BattleField.obj
          Debug\Weapon.obj
@@ -32,4 +55,4 @@
 
 生成成功。
 
-已用时间 00:00:01.01
+已用时间 00:00:01.91

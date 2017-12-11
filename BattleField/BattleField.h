@@ -35,9 +35,9 @@ public:
 	void BattleStart();
 public:
 	// 蓝军兵力投入战场
-	void InputTroopsBlue(int weaponType, float posX, float posY);
+	void InputTroopsBlue(ENUM_WEAPON_TYPE weaponType, float posX, float posY);
 	// 红军兵力投入战场
-	void InputTroopsRed(int weaponType, float posX, float posY);
+	void InputTroopsRed(ENUM_WEAPON_TYPE weaponType, float posX, float posY);
 	// 刷新战场态势 同时返回游戏状态
 	ENUM_BATTLE_STATUS UpdateBattleFieldSituation();
 

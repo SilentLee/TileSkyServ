@@ -104,12 +104,17 @@ VOID CGameIocp::onPT_BATTLE_ARRANGE_WEAPON(CConnectedUser* connectedUser, BYTE* 
 
 	CBattleField* BattleField = connectedUser->GetEnteredRoom()->GetBattleField();
 
+	// 读取参数
+	ENUM_WEAPON_TYPE WeaponType = (ENUM_WEAPON_TYPE)Data.WEAPON_TYPE;
+	float PosX = Data.POS_X;
+	float PosY = Data.POS_Y;
+
 	// 将新添加兵力加入游戏中玩家对应的一方
 	if (connectedUser->GetSideInGame() == SIDE_BLUE) {
-		BattleField->InputTroopsBlue(Data.WEAPON_TYPE, Data.POS_X, Data.POS_Y);
+		BattleField->InputTroopsBlue(WeaponType, PosX, PosY);
 	}
 	else if (connectedUser->GetSideInGame() == SIDE_RED) {
-		BattleField->InputTroopsRed(Data.WEAPON_TYPE, Data.POS_X, Data.POS_Y);
+		BattleField->InputTroopsRed(WeaponType, PosX, PosY);
 	}
 
 	//S_PT_BATTLE_ARRANGE_CARD_SUCC_U  ptBattleArrangeCardSuccU;

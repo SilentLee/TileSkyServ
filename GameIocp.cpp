@@ -77,6 +77,7 @@ VOID CGameIocp::GameThreadCallback(VOID)
 
 	while (TRUE)
 	{
+		//DWORD Result = WaitForSingleObject(mGameThreadDestroyEvent, 1000);
 		DWORD Result = WaitForSingleObject(mGameThreadDestroyEvent, 1000);
 
 		if (Result == WAIT_OBJECT_0) // WaitForSingleObject 变为有信号的状态, 结束线程

@@ -12,6 +12,8 @@ void CBattleField::Begin()
 	mStatus = BATTLE_STATUS_IN_PREPARING;
 	// 剩余游戏时间
 	mRemainGameTime = DEFALUT_GAME_TIME;
+	// 武器标签计数器置零
+	mWeaponTagCounter = 0;
 }
 
 // 战场重置函数
@@ -25,6 +27,8 @@ void CBattleField::End()
 	mStatus = BATTLE_STATUS_IN_PREPARING;
 	// 剩余游戏时间
 	mRemainGameTime = DEFALUT_GAME_TIME;
+	// 武器标签计数器置零
+	mWeaponTagCounter = 0;
 }
 
 // 对战开始
@@ -39,10 +43,11 @@ void CBattleField::BattleStart()
 
 	// 设置游戏时长
 	mRemainGameTime = DEFALUT_GAME_TIME;
+	// 武器标签计数器置零
+	mWeaponTagCounter = 0;
 }
 
-// 蓝军兵力投入战场
-void CBattleField::InputTroopsBlue(ENUM_WEAPON_TYPE weaponType, float posX, float posY)
+Weapon CBattleField::InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troopsIn, float posX, float posY)
 {
 	printf("BattleField::inputTroopsBlue\n");
 
@@ -50,7 +55,7 @@ void CBattleField::InputTroopsBlue(ENUM_WEAPON_TYPE weaponType, float posX, floa
 	// 应当更改为用户从数据库中读取的参数
 	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
 	int LEVEL = 1;
-	float SPEED = 10;
+	float SPEED = 180;
 	int RANGE_DEC = 5;
 	int DP = 10;
 	int HP = 100;
@@ -58,31 +63,32 @@ void CBattleField::InputTroopsBlue(ENUM_WEAPON_TYPE weaponType, float posX, floa
 
 	S_PROPERTY_WP propertyWp = S_PROPERTY_WP{ WP_TYPE, LEVEL, SPEED, RANGE_DEC, DP, HP, RANGE_FIRE };
 
-	Weapon weapon;
-	weapon.init(TROOPS_BLUE, propertyWp, posX, posY);
-	mTroopsInBlueTeam.push_back(weapon);
-}
+	Weapon Weapon;
 
-// 红军兵力投入战场
-void CBattleField::InputTroopsRed(ENUM_WEAPON_TYPE weaponType, float posX, float posY)
-{
-	printf("BattleField::inputTroopsRed\n");
+	// 武器在战场中的标签
+	int WeaponTag = mWeaponTagCounter;
+	// 重新计算武器在战场中的纵坐标
+	if (troopsIn == TROOPS_BLUE) {
+		// 蓝方从下方向上飞行
+		posY = posY;
+	}
+	else if (troopsIn == TROOPS_RED) {
+		// 红方从上方向下飞行
+		posY = 2060 - posY;
+	}
 
-	// 测试时使用的武器属性参数 
-	// 应当更改为用户从数据库中读取的参数
-	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
-	int LEVEL = 1;
-	float SPEED = 10;
-	int RANGE_DEC = 5;
-	int DP = 10;
-	int HP = 100;
-	int RANGE_FIRE = 5;
+	Weapon.init(troopsIn, propertyWp, posX, posY, WeaponTag);
+	mWeaponTagCounter++;
 
-	S_PROPERTY_WP propertyWp = S_PROPERTY_WP{ WP_TYPE, LEVEL, SPEED, RANGE_DEC, DP, HP, RANGE_FIRE };
+	// 将武器加入对应的蓝方或者红方
+	if (troopsIn == TROOPS_BLUE) {
+		mTroopsInBlueTeam.push_back(Weapon);
+	}
+	else if (troopsIn == TROOPS_RED) {
+		mTroopsInRedTeam.push_back(Weapon);
+	}
 
-	Weapon weapon;
-	weapon.init(TROOPS_RED, propertyWp, posX, posY);
-	mTroopsInRedTeam.push_back(weapon);
+	return Weapon;
 }
 
 // 战场态势刷新

@@ -135,7 +135,7 @@ CRoom* CRoomManager::QuickJoinRoom(CConnectedUser *connectedUser, ROOM_TYPE room
 	// 遍历房间动态数组
 	for(int i = 0; i < mRoomVectorDouble.size(); i++) {
 		// 若第 i 个房间的房间状态为 RM_WAITING 说明此房间有空位 玩家可以进入
-		if (mRoomVectorDouble[i]->GetStatus() == RM_WAITING)
+		if (mRoomVectorDouble[i]->GetStatus() == ROOM_STATUS_WAITING)
 		{
 			// 若玩家成功进入房间
 			if (mRoomVectorDouble[i]->JoinRoom(connectedUser, roomType)) {
@@ -147,7 +147,7 @@ CRoom* CRoomManager::QuickJoinRoom(CConnectedUser *connectedUser, ROOM_TYPE room
 			// 若玩家进入房间失败 继续检索
 			continue;
 		}
-		else if (mRoomVectorDouble[i]->GetStatus() == RM_EMPTY) {
+		else if (mRoomVectorDouble[i]->GetStatus() == ROOM_STATUS_EMPTY) {
 			// 若检索到状态为空的房间 记录下房间地址 暂不进入房间
 			Room = mRoomVectorDouble[i];
 		}
@@ -157,7 +157,7 @@ CRoom* CRoomManager::QuickJoinRoom(CConnectedUser *connectedUser, ROOM_TYPE room
 	// 如果有空房间 说明玩家此前没有找到房间进入
 	// 进入当前存储于 Room 中的空房间
 	// 如果没有空房间 Room 为 NULL 查找房间失败
-	if (Room != NULL && Room->GetStatus() == RM_EMPTY) {
+	if (Room != NULL && Room->GetStatus() == ROOM_STATUS_EMPTY) {
 		Room->JoinRoom(connectedUser, roomType);
 	}
 
@@ -175,14 +175,14 @@ BOOL CRoomManager::UpdateRooms(CGameIocp *iocp)
 		CRoom *Room = mRoomVectorDouble[i];
 
 		// 房间正在进行对战时的处理
-		if (Room->GetStatus() == RM_GAME_IN_PROGRESS) {
+		if (Room->GetStatus() == ROOM_STATUS_GAME_IN_PROGRESS) {
 
 			// 刷新房间游戏进程
 			// 同时读取房间当前状态 检测游戏是否结束
 			ROOM_STATUS RoomStatus = Room->UpdateGameProcess();
 
 			// 若游戏结束 执行 Room->GameEnd()
-			if (RoomStatus == RM_GAME_ENDING) {
+			if (RoomStatus == ROOM_STATUS_GAME_ENDING) {
 				Room->GameEnd(iocp);
 			}
 		}

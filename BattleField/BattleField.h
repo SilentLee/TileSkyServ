@@ -34,12 +34,12 @@ public:
 	// 对战开始
 	void BattleStart();
 public:
-	// 蓝军兵力投入战场
-	void InputTroopsBlue(ENUM_WEAPON_TYPE weaponType, float posX, float posY);
-	// 红军兵力投入战场
-	void InputTroopsRed(ENUM_WEAPON_TYPE weaponType, float posX, float posY);
+	// 兵力投入战场 返回加入战场的武器
+	Weapon InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troopsIn, float posX, float posY);
 	// 刷新战场态势 同时返回游戏状态
 	ENUM_BATTLE_STATUS UpdateBattleFieldSituation();
+	// 战场中武器标签计数器
+	int mWeaponTagCounter;
 
 // 存取函数
 public:
@@ -56,4 +56,8 @@ public:
 	// 获取兵力数量
 	int getCountOfTroopsInBlueTeam() { return mTroopsInBlueTeam.size(); };
 	int getCountOfTroopsInRedTeam() { return mTroopsInRedTeam.size(); };
+
+	// 设置战场中武器标签计数器
+	bool increaseWeaponTagCounter(){ mWeaponTagCounter = mWeaponTagCounter++; };
+	int getWeaponTagCounter(){ return mWeaponTagCounter; };
 };

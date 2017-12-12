@@ -8,7 +8,8 @@ Weapon::Weapon()
 	memset(&mPropertyWp, 0, sizeof(S_PROPERTY_WP));
 	mPosX = 0;
 	mPosY = 0;
-	mStatus = STATUS_WP_NONE;
+	mStatus = WP_STATUS_NONE;
+	mWeaponTag = 0;
 }
 
 // 析构函数
@@ -18,24 +19,28 @@ Weapon::~Weapon()
 	memset(&mPropertyWp, 0, sizeof(S_PROPERTY_WP));
 	mPosX = 0;
 	mPosY = 0;
-	mStatus = STATUS_WP_NONE;
+	mStatus = WP_STATUS_NONE;
+	mWeaponTag = 0;
 }
 
 // 初始化函数
-void Weapon::init(ENUM_TROOPS troops, S_PROPERTY_WP propertyWp, float posX, float posY)
+void Weapon::init(ENUM_TROOPS troops, S_PROPERTY_WP propertyWp, float posX, float posY, int weaponTag)
 {
 	mTroopsIn = troops;
 	memcpy(&mPropertyWp, &propertyWp, sizeof(S_PROPERTY_WP));
 	mPosX = posX;
 	mPosY = posY;
 
+	// 设置武器标签
+	mWeaponTag = weaponTag;
+
 	// 建筑类武器将状态设置为 STATUS_WP_STOP 
 	// 飞机类武器将状态设置为 STATUS_WP_MOVE_FORWARD
 	if (propertyWp.WP_TYPE <= WP_TYPE_RADAR) {
-		mStatus = STATUS_WP_STOP;
+		mStatus = WP_STATUS_STOP;
 	}
 	else {
-		mStatus = STATUS_WP_MOVE_FORWARD;
+		mStatus = WP_STATUS_MOVING;
 	}
 }
 
@@ -56,7 +61,8 @@ void Weapon::Move()
 
 	// 红方所属兵力 自战场上方向下运动
 	case TROOPS_RED:
-		mPosY = max(0.0f, mPosY - mPropertyWp.SPEED);
+		//mPosY = max(0.0f, mPosY - mPropertyWp.SPEED);
+		mPosY = mPosY - mPropertyWp.SPEED;
 		break;
 	}
 }

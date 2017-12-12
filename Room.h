@@ -9,13 +9,13 @@ using namespace std;
 
 typedef enum ROOM_STATUS
 {
-	RM_EMPTY = 0,
-	RM_WAITING,
-	RM_READY,
-	RM_GAME_START,
-	RM_GAME_IN_PROGRESS,
-	RM_GAME_ENDING,
-	RM_GAME_ENDED
+	ROOM_STATUS_EMPTY = 0,
+	ROOM_STATUS_WAITING,
+	ROOM_STATUS_READY,
+	ROOM_STATUS_GAME_START,
+	ROOM_STATUS_GAME_IN_PROGRESS,
+	ROOM_STATUS_GAME_ENDING,
+	ROOM_STATUS_GAME_ENDED
 };
 
 typedef enum ROOM_TYPE
@@ -94,7 +94,7 @@ public:
 	inline USHORT			GetCurrentUserCount(void){CThreadSync Sync;return (mUsersInBlueTeam.size() + mUsersInRedTeam.size());}
 
 	inline void SetType(ROOM_TYPE type){CThreadSync Sync;mType = type;}
-	inline INT GetType(){CThreadSync Sync;return mType;}
+	inline ROOM_TYPE GetType(){ CThreadSync Sync; return mType; }
 
 	inline void SetStatus(ROOM_STATUS status){CThreadSync Sync;mStatus = status;};
 	inline ROOM_STATUS GetStatus(){ CThreadSync Sync; return mStatus; };

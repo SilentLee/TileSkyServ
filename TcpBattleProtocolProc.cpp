@@ -77,8 +77,9 @@ VOID CGameIocp::onPT_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* pac
 	// ROOM_STATUS = RM_WAITING 未达到开始游戏的人数要求 
 	ptBattleSearchRoomSuccU.ROOM_ID = (DWORD_PTR)this;
 	ptBattleSearchRoomSuccU.ROOM_TYPE = Room->GetType();
-	ptBattleSearchRoomSuccU.CURRENT_USER_COUNT = Room->GetCurrentUserCount();
 	ptBattleSearchRoomSuccU.ROOM_STATUS = Room->GetStatus(); 
+	ptBattleSearchRoomSuccU.CURRENT_USER_COUNT = Room->GetCurrentUserCount();
+	ptBattleSearchRoomSuccU.SIDE_IN_GAME = connectedUser->GetSideInGame();
 
 	connectedUser->WritePacket(
 		PT_BATTLE_SEARCH_ROOM_SUCC_U,
@@ -86,12 +87,12 @@ VOID CGameIocp::onPT_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* pac
 		WRITE_PT_BATTLE_SEARCH_ROOM_SUCC_U(WriteBuffer, ptBattleSearchRoomSuccU));
 
 	// 房间处于 等待 状态 函数返回
-	if (Room->GetStatus() == RM_WAITING) {
+	if (Room->GetStatus() == ROOM_STATUS_WAITING) {
 		printf("RM_WAITING");
 		return;
 	}
 	// 房间处于 就绪 状态 通知各玩家开始游戏
-	else if (Room->GetStatus() == RM_READY) {
+	else if (Room->GetStatus() == ROOM_STATUS_READY) {
 		Room->GameStart();
 	}
 }
@@ -104,35 +105,35 @@ VOID CGameIocp::onPT_BATTLE_ARRANGE_WEAPON(CConnectedUser* connectedUser, BYTE* 
 
 	CBattleField* BattleField = connectedUser->GetEnteredRoom()->GetBattleField();
 
-	// 读取参数
+	// 读取武器类型
 	ENUM_WEAPON_TYPE WeaponType = (ENUM_WEAPON_TYPE)Data.WEAPON_TYPE;
+	// 解析武器归属
+	ENUM_TROOPS TroopsIn = (ENUM_TROOPS)Data.TROOPS_IN;
+	// 读取武器坐标
 	float PosX = Data.POS_X;
 	float PosY = Data.POS_Y;
 
-	// 将新添加兵力加入游戏中玩家对应的一方
-	if (connectedUser->GetSideInGame() == SIDE_BLUE) {
-		BattleField->InputTroopsBlue(WeaponType, PosX, PosY);
-	}
-	else if (connectedUser->GetSideInGame() == SIDE_RED) {
-		BattleField->InputTroopsRed(WeaponType, PosX, PosY);
-	}
+	// 将武器加入战场 并获取返回的序号
+	Weapon Weapon = BattleField->InputTroops(WeaponType, TroopsIn, PosX, PosY);
 
-	//S_PT_BATTLE_ARRANGE_CARD_SUCC_U  ptBattleArrangeCardSuccU;
-	//memset(&ptBattleArrangeCardSuccU, 0, sizeof(ptBattleArrangeCardSuccU));
+	// 建立发送对象并置零
+	S_PT_BATTLE_ARRANGE_WEAPON_SUCC_M ptBattleArrangeWeaponSuccM;
+	memset(&ptBattleArrangeWeaponSuccM, 0, sizeof(S_PT_BATTLE_ARRANGE_WEAPON_SUCC_M));
 
-	//ptBattleArrangeCardSuccU.CARD_TYPE = Data.CARD_TYPE;
-
-	//ptBattleArrangeCardSuccU.COORDINATE_X = Data.COORDINATE_X;
-	//ptBattleArrangeCardSuccU.COORDINATE_Y = (BATTLE_FIELD_HEIGHT_IN_SQUARE - 1) - Data.COORDINATE_Y;
-	//ptBattleArrangeCardSuccU.POS_X = Data.POS_X;
-	//ptBattleArrangeCardSuccU.POS_Y = 2060 - Data.POS_Y;
-	//ptBattleArrangeCardSuccU.SPEED = Data.SPEED;
-
-	//BYTE WriteBuffer[MAX_BUFFER_LENGTH] = { 0, };
-
-	//connectedUser->WritePacket(PT_BATTLE_ARRANGE_CARD_SUCC_U,
-	//	WriteBuffer,
-	//	WRITE_PT_BATTLE_ARRANGE_CARD_SUCC_U(WriteBuffer, ptBattleArrangeCardSuccU));
-
-	//printf("Send PT_BATTLE_ARRANGE_CARD_SUCC_U\n");
+	// 武器类型 武器归属 武器坐标 未作改变 直接转发
+	ptBattleArrangeWeaponSuccM.WEAPON_TYPE = Weapon.GetProperty().WP_TYPE;
+	ptBattleArrangeWeaponSuccM.TROOPS_IN = Weapon.GetTroopsIn();
+	ptBattleArrangeWeaponSuccM.POS_X = Weapon.GetPosX();
+	ptBattleArrangeWeaponSuccM.POS_Y = Weapon.GetPosY();
+	// 武器编号需要从加入战场后返回的对象中读取
+	ptBattleArrangeWeaponSuccM.WEAPON_TAG = Weapon.GetWeaponTag();
+	// 武器速度需要从加入战场后返回的对象中读取
+	ptBattleArrangeWeaponSuccM.SPEED = Weapon.GetProperty().SPEED;
+	
+	// 建立发送数据的缓冲区
+	BYTE WriteBuffer[MAX_BUFFER_LENGTH] = { 0, };
+	// 读取玩家所在房间
+	CRoom* room = connectedUser->GetEnteredRoom();
+	// 向房间内所有玩家广播武器布设消息
+	room->WriteAll(PT_BATTLE_ARRANGE_WEAPON_SUCC_M, WriteBuffer, WRITE_PT_BATTLE_ARRANGE_WEAPON_SUCC_M(WriteBuffer, ptBattleArrangeWeaponSuccM));
 }

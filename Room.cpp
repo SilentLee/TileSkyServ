@@ -40,7 +40,7 @@ extern S_DOUBLE_BATTLE_ROOM_USER GetDoubleBattleRoomUserPacket
 CRoom::CRoom(void)
 {
 	mType = RM_NO_TYPE;
-	mStatus = RM_EMPTY;
+	mStatus = ROOM_STATUS_EMPTY;
 	mIndex = 0;
 	mUsersInBlueTeam.clear();
 	mUsersInRedTeam.clear();
@@ -70,7 +70,7 @@ bool CRoom::Begin(DWORD index)
 	CThreadSync Sync;
 
 	mType = RM_NO_TYPE;
-	mStatus = RM_EMPTY;
+	mStatus = ROOM_STATUS_EMPTY;
 	mIndex = index;
 	mUsersInBlueTeam.clear();
 	mUsersInRedTeam.clear();
@@ -85,7 +85,7 @@ bool CRoom::End(void)
 	CThreadSync Sync;
 
 	mType = RM_NO_TYPE;
-	mStatus = RM_EMPTY;
+	mStatus = ROOM_STATUS_EMPTY;
 	mIndex = 0;
 	mUsersInBlueTeam.clear();
 	mUsersInRedTeam.clear();
@@ -142,12 +142,12 @@ bool CRoom::JoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType)
 
 	// 若当前玩家加入房间后 房间内人数满足游戏开始条件 将房间更改为 RM_READY
 	if (mUsersInBlueTeam.size() + mUsersInRedTeam.size() == capacityOfRoom) {
-		mStatus = RM_READY;
+		mStatus = ROOM_STATUS_READY;
 	}
 	// 若当前玩家加入房间后 房间内人数仍然不满足游戏开始条件 将房间状态设置为 RM_WAITINIG
 	else
 	{
-		mStatus = RM_WAITING;
+		mStatus = ROOM_STATUS_WAITING;
 	}
 
 	return true;
@@ -279,7 +279,7 @@ bool CRoom::GameStart(void)
 	// 设置房间内所有玩家状态为 US_GAME_START
 	SetUserStatusAll(US_GAME_START);
 	// 设置房间状态为 RM_GAME_START
-	SetStatus(RM_GAME_START);
+	SetStatus(ROOM_STATUS_GAME_START);
 	// 设置房间游戏开始标志位为 true
 	mIsGameStarted = true;
 
@@ -306,12 +306,14 @@ bool CRoom::GameStart(void)
 	// 通知各玩家游戏开始 在游戏开始消息成功发送之前 不能将房间状态 mStatus 更改为 RM_GAME_IN_PROGRESS
 	S_PT_BATTLE_START_GAME_M ptBattleStartGameM;
 	memset(&ptBattleStartGameM, 0, sizeof(S_PT_BATTLE_START_GAME_M));
-	time(&ptBattleStartGameM.START_TIME);
+	//time(&ptBattleStartGameM.START_TIME);
 	ptBattleStartGameM.ROOM_STATUS = GetStatus();
+	//ptBattleStartGameM.ROOM_TYPE = GetType();
+
 	WriteAll(PT_BATTLE_START_GAME_M, WriteBuffer, WRITE_PT_BATTLE_START_GAME_M(WriteBuffer, ptBattleStartGameM));
 
 	//// 游戏开始消息发送成功后 将房间状态更改为 RM_GAME_IN_PROGRESS
-	SetStatus(RM_GAME_IN_PROGRESS);
+	SetStatus(ROOM_STATUS_GAME_IN_PROGRESS);
 
 	// 将战场设置为游戏开始
 	mBattleField->BattleStart();
@@ -327,7 +329,7 @@ bool CRoom::GameEnd(CGameIocp *iocp)
 {
 	CThreadSync Sync;
 
-	mStatus = RM_GAME_ENDED;
+	mStatus = ROOM_STATUS_GAME_ENDED;
 	mIsGameStarted = false;
 
 	BYTE	WriteBuffer[MAX_BUFFER_LENGTH]	= {0,};
@@ -355,7 +357,7 @@ bool CRoom::GameEnd(CGameIocp *iocp)
 	}
 
 	mType = RM_NO_TYPE;
-	mStatus = RM_EMPTY;
+	mStatus = ROOM_STATUS_EMPTY;
 	mUsersInBlueTeam.clear();
 	mUsersInRedTeam.clear();
 	mIsGameStarted = false;

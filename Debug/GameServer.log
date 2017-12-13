@@ -1,2 +1,10 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: 中间目录(Debug\)包含从另一个项目(GameServer.vcxproj, TileSkyServ111.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+  BattleField.cpp
+d:\tilesky3.0_demo\tileskyserv\proj.win32\lowlib\multithreadsync.h(3): warning C4091: “extern ”: 没有声明变量时忽略“CCriticalSection”的左侧
+d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\weapons\weapon.h(40): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_WEAPON_STATUS”的左侧
+d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\weapons\weapon.h(52): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_MOVE_DIRECTION”的左侧
+d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\weapons\weapon.h(58): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_TROOPS”的左侧
+d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.h(17): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_BATTLE_STATUS”的左侧
+d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.cpp(110): warning C4018: “<”: 有符号/无符号不匹配
+d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.cpp(115): warning C4018: “<”: 有符号/无符号不匹配
   GameServer.vcxproj -> D:\TileSky3.0_Demo\TileSkyServ\proj.win32\Debug\TileSkyServ.exe

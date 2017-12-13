@@ -1,4 +1,6 @@
 #pragma once
+#include "MultiThreadSync.h"
+#include "CriticalSection.h"
 #include "string.h"
 #include <algorithm>
 
@@ -66,7 +68,7 @@ typedef struct _S_PROPERTY_WP
 	int RANGE_FIRE;
 } S_PROPERTY_WP;
 
-class Weapon
+class Weapon : public CMultiThreadSync<Weapon>
 {
 public:
 	// 构造函数 与 析构函数
@@ -94,19 +96,19 @@ protected:
 
 public:
 	// 存取函数
-	void SetTroopsIn(ENUM_TROOPS troopsIn){ mTroopsIn = troopsIn; };
-	void SetProperty(S_PROPERTY_WP propertyWp){ memcpy(&mPropertyWp, &propertyWp, sizeof(S_PROPERTY_WP)); };
-	void SetPosX(float posX){ mPosX = posX; };
-	void SetPosY(float posY){ mPosY = posY; };
-	void SetStatus(int status){ mStatus = status; };
-	void SetWeaponTag(int weaponTag){ mWeaponTag = weaponTag; };
+	void SetTroopsIn(ENUM_TROOPS troopsIn) { CThreadSync Sync; mTroopsIn = troopsIn; };
+	void SetProperty(S_PROPERTY_WP propertyWp) { CThreadSync Sync; memcpy(&mPropertyWp, &propertyWp, sizeof(S_PROPERTY_WP)); };
+	void SetPosX(float posX) { CThreadSync Sync; mPosX = posX; };
+	void SetPosY(float posY) { CThreadSync Sync; mPosY = posY; };
+	void SetStatus(int status) { CThreadSync Sync; mStatus = status; };
+	void SetWeaponTag(int weaponTag) { CThreadSync Sync; mWeaponTag = weaponTag; };
 
-	ENUM_TROOPS GetTroopsIn(){ return mTroopsIn; };
-	S_PROPERTY_WP GetProperty(){ return mPropertyWp; };
-	float GetPosX(){ return mPosX; };
-	float GetPosY(){ return mPosY; };
-	int GetStatus(){ return mStatus; };
-	int GetWeaponTag(){ return mWeaponTag; };
+	ENUM_TROOPS GetTroopsIn() { CThreadSync Sync; return mTroopsIn; };
+	S_PROPERTY_WP GetProperty() { CThreadSync Sync; return mPropertyWp; };
+	float GetPosX() { CThreadSync Sync; return mPosX; };
+	float GetPosY() { CThreadSync Sync; return mPosY; };
+	int GetStatus() { CThreadSync Sync; return mStatus; };
+	int GetWeaponTag() { CThreadSync Sync; return mWeaponTag; };
 
 public:
 	void Move();

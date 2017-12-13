@@ -4,6 +4,8 @@
 // 战场初始化函数
 void CBattleField::Begin()
 {
+	CThreadSync Sync;
+
 	// 存储对战双方兵力的动态数组
 	mTroopsInBlueTeam.clear();
 	mTroopsInRedTeam.clear();
@@ -19,6 +21,8 @@ void CBattleField::Begin()
 // 战场重置函数
 void CBattleField::End()
 {
+	CThreadSync Sync;
+
 	// 存储对战双方兵力的动态数组
 	mTroopsInBlueTeam.clear();
 	mTroopsInRedTeam.clear();
@@ -34,6 +38,8 @@ void CBattleField::End()
 // 对战开始
 void CBattleField::BattleStart()
 {
+	CThreadSync Sync;
+
 	// 存储对战双方兵力的动态数组
 	mTroopsInBlueTeam.clear();
 	mTroopsInRedTeam.clear();
@@ -49,13 +55,15 @@ void CBattleField::BattleStart()
 
 Weapon CBattleField::InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troopsIn, float posX, float posY)
 {
+	CThreadSync Sync;
+
 	printf("BattleField::inputTroopsBlue\n");
 
 	// 测试时使用的武器属性参数 
 	// 应当更改为用户从数据库中读取的参数
 	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
 	int LEVEL = 1;
-	float SPEED = 180;
+	float SPEED = 3;
 	int RANGE_DEC = 5;
 	int DP = 10;
 	int HP = 100;
@@ -94,6 +102,8 @@ Weapon CBattleField::InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troops
 // 战场态势刷新
 ENUM_BATTLE_STATUS CBattleField::UpdateBattleFieldSituation()
 {
+	CThreadSync Sync;
+
 	printf("BattleField::updateBattleFieldSituation time = %d\n", mRemainGameTime);
 
 	// 刷新蓝方兵力位置

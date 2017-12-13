@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include "MultiThreadSync.h"
+#include "CriticalSection.h"
 #include "Weapon.h"
 
 using namespace std;
@@ -14,7 +16,7 @@ typedef enum ENUM_BATTLE_STATUS {
 	BATTLE_STATUS_DRAW
 };
 
-class CBattleField
+class CBattleField : public CMultiThreadSync<CBattleField>
 {
 private:
 	// 存储对战双方兵力的动态数组
@@ -44,20 +46,20 @@ public:
 // 存取函数
 public:
 	// 当前战场状态
-	void SetStatus(ENUM_BATTLE_STATUS status) { mStatus = status; };
-	ENUM_BATTLE_STATUS GetStatus() { return mStatus; };
+	void SetStatus(ENUM_BATTLE_STATUS status) { CThreadSync Sync; mStatus = status; };
+	ENUM_BATTLE_STATUS GetStatus() { CThreadSync Sync; return mStatus; };
 	// 当前游戏计时
-	bool DecreaseRemainGameTime() { mRemainGameTime = max(0, mRemainGameTime--); return mRemainGameTime ? true : false; };
-	int GetRemainGameTime() { return mRemainGameTime; };
+	bool DecreaseRemainGameTime() { CThreadSync Sync; mRemainGameTime = max(0, mRemainGameTime--); return mRemainGameTime ? true : false; };
+	int GetRemainGameTime() { CThreadSync Sync; return mRemainGameTime; };
 
 	// 获取指定兵力
-	Weapon* getTroopInBlueTeam(int index) { return &mTroopsInBlueTeam[index]; };
-	Weapon* getTroopInRedTeam(int index) { return &mTroopsInRedTeam[index]; };
+	Weapon* getTroopInBlueTeam(int index) { CThreadSync Sync; return &mTroopsInBlueTeam[index]; };
+	Weapon* getTroopInRedTeam(int index) { CThreadSync Sync; return &mTroopsInRedTeam[index]; };
 	// 获取兵力数量
-	int getCountOfTroopsInBlueTeam() { return mTroopsInBlueTeam.size(); };
-	int getCountOfTroopsInRedTeam() { return mTroopsInRedTeam.size(); };
+	int getCountOfTroopsInBlueTeam() { CThreadSync Sync; return mTroopsInBlueTeam.size(); };
+	int getCountOfTroopsInRedTeam() { CThreadSync Sync; return mTroopsInRedTeam.size(); };
 
 	// 设置战场中武器标签计数器
-	bool increaseWeaponTagCounter(){ mWeaponTagCounter = mWeaponTagCounter++; };
-	int getWeaponTagCounter(){ return mWeaponTagCounter; };
+	bool increaseWeaponTagCounter() { CThreadSync Sync; mWeaponTagCounter = mWeaponTagCounter++; };
+	int getWeaponTagCounter() { CThreadSync Sync; return mWeaponTagCounter; };
 };

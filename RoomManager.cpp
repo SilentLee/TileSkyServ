@@ -170,7 +170,7 @@ BOOL CRoomManager::UpdateRooms(CGameIocp *iocp)
 	CThreadSync Sync;
 
 	// 重复所有房间
-	for (DWORD i = 0; i < mRoomVectorDouble.size(); i++)
+	for (int i = 0; i < mRoomVectorDouble.size(); i++)
 	{
 		CRoom *Room = mRoomVectorDouble[i];
 
@@ -189,4 +189,23 @@ BOOL CRoomManager::UpdateRooms(CGameIocp *iocp)
 	}
 
 	return TRUE;
+}
+
+// 与客户端同步房间状态的函数
+BOOL CRoomManager::SyncRooms(CGameIocp* iocp)
+{
+	CThreadSync Sync;
+
+	// 遍历所有房间
+	for (int i = 0; i < mRoomVectorDouble.size(); i++)
+	{
+		CRoom* Room = mRoomVectorDouble[i];
+
+		// 房间正在进行对战时的处理
+		if (Room->GetStatus() == ROOM_STATUS_GAME_IN_PROGRESS) {
+			ROOM_STATUS RoomStatus = Room->SyncGameProcess();
+		}
+	}
+
+	return true;
 }

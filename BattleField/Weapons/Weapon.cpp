@@ -26,6 +26,8 @@ Weapon::~Weapon()
 // 初始化函数
 void Weapon::init(ENUM_TROOPS troops, S_PROPERTY_WP propertyWp, float posX, float posY, int weaponTag)
 {
+	CThreadSync Sync;
+
 	mTroopsIn = troops;
 	memcpy(&mPropertyWp, &propertyWp, sizeof(S_PROPERTY_WP));
 	mPosX = posX;
@@ -47,6 +49,8 @@ void Weapon::init(ENUM_TROOPS troops, S_PROPERTY_WP propertyWp, float posX, floa
 // 武器移动
 void Weapon::Move()
 {
+	CThreadSync Sync;
+
 	// 武器类型无效 或 武器为建筑类 不能移动 函数返回
 	if (mPropertyWp.WP_TYPE <= WP_TYPE_RADAR) {
 		return;
@@ -70,11 +74,13 @@ void Weapon::Move()
 // 武器攻击
 void Weapon::Attack()
 {
-
+	CThreadSync Sync;
 }
 
 // 遭到攻击
 int Weapon::BeAttacked(int DP)
 {
+	CThreadSync Sync;
+
 	return mPropertyWp.HP = max(0, mPropertyWp.HP - DP);
 }

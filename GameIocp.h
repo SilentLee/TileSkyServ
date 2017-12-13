@@ -83,97 +83,108 @@ static INT64	MAKE_SERIAL(INT itemType, INT equipLocation, INT sellType, INT crea
 class CGameIocp : public CIocp
 {
 public:
-	CGameIocp(VOID);
-	virtual ~CGameIocp(VOID);
+	CGameIocp(void);
+	virtual ~CGameIocp(void);
 
 private:
 	CNetworkSession			mListenSession; // 承担Listen的对象
 	CConnectedUserManager	mConnectedUserManager; // 管理用户的CConnectedUserManager
 	CRoomManager			mRoomManager; // 管理房间的CRoomManager
 
-	// 检索异常终止的客户端并进行处理的KeepAlive线程模块
+	// 心跳线程句柄
 	HANDLE					mKeepThreadHandle;
+	// 心跳线程销毁事件句柄
 	HANDLE					mKeepThreadDestroyEvent;
 
-	// 管理比赛时间及各种游戏相关时间的游戏线程模块
+	// 游戏模拟判决线程句柄
 	HANDLE					mGameThreadHandle;
+	// 游戏模拟判决线程销毁事件句柄
 	HANDLE					mGameThreadDestroyEvent;
+	
+	// 定时同步服务器与客户端战场态势线程句柄
+	HANDLE					mSyncThreadHandle;
+	// 定时同步服务器与客户端战场态势线程销毁事件句柄
+	HANDLE					mSyncThreadDestroyEvent;
 
 	CMySqlSessionPool mMySqlSessionPool;
 
 public:
-	BOOL	Begin(VOID);
-	BOOL	End(VOID);
+	bool	Begin(void);
+	bool	End(void);
 
-	VOID	KeepThreadCallback(VOID);
-	VOID	GameThreadCallback(VOID);
+	// 心跳线程回调函数
+	void	KeepThreadCallback(void);
+	// 游戏模拟判决线程的回调函数
+	void	GameThreadCallback(void);
+	// 定时同步服务器与客户端战场态势线程的回调函数
+	void SyncThreadCallback(void);
 
 protected:
-	VOID OnIoRead(VOID *object, DWORD dataLength);
-	VOID OnIoWrote(VOID *object, DWORD dataLength);
-	VOID OnIoConnected(VOID *object);
-	VOID OnIoDisconnected(VOID *object);
+	void OnIoRead(void *object, DWORD dataLength);
+	void OnIoWrote(void *object, DWORD dataLength);
+	void OnIoConnected(void *object);
+	void OnIoDisconnected(void *object);
 
 private:
 	// 1v1 斗场中的协议处理函数
-	VOID onPT_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_BATTLE_ARRANGE_WEAPON(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_BATTLE_ARRANGE_WEAPON(CConnectedUser* connectedUser, BYTE *packet);
 
 private:
 	// 协议处理函数
 	// 用户账户注册 登录 信息更新数据包处理
-	VOID onPT_VISITOR_REGIST(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_USER_NAME_REGIST(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_BIND_ACCOUNT_REGIST(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_CELLPHONE_NO_REGIST(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_USER_NAME_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_BIND_ACCOUNT_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_CELLPHONE_NO_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_VISITOR_DEFAULT_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_VISITOR_REGIST(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_USER_NAME_REGIST(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_BIND_ACCOUNT_REGIST(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_CELLPHONE_NO_REGIST(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_USER_NAME_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_BIND_ACCOUNT_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_CELLPHONE_NO_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_VISITOR_DEFAULT_LOGIN(CConnectedUser* connectedUser, BYTE *packet);
 	
-	VOID onPT_ADD_NICKNAME(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_ADD_BIND_ACCOUNT(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_ADD_CELLPHONE_NO(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_UPDATE_PASSWORD(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_UPDATE_NICKNAME(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_UPDATE_CELLPHONE_NO(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_UPDATE_RECORD(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_ADD_NICKNAME(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_ADD_BIND_ACCOUNT(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_ADD_CELLPHONE_NO(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_UPDATE_PASSWORD(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_UPDATE_NICKNAME(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_UPDATE_CELLPHONE_NO(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_UPDATE_RECORD(CConnectedUser* connectedUser, BYTE *packet);
 
 	// 用户购买请求数据包处理
-	VOID onPT_BUY_COINS(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_BUY_DIAMONDS(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_BUY_CARDS(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_ACQUIRE_CHEST(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_OPEN_SUPPLY_CHEST(CConnectedUser* connectedUser, BYTE *packet);
-	VOID onPT_UPGRADE_CARD(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_BUY_COINS(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_BUY_DIAMONDS(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_BUY_CARDS(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_ACQUIRE_CHEST(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_OPEN_SUPPLY_CHEST(CConnectedUser* connectedUser, BYTE *packet);
+	void onPT_UPGRADE_CARD(CConnectedUser* connectedUser, BYTE *packet);
 
 	// 客户端装载数据请求数据包处理
-	VOID onPT_LOAD_CARDS_ON_SALE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_LOAD_CARDS_ON_SALE(CConnectedUser* connectedUser, BYTE* packet);
 
 	// 二人死斗 游戏数据包处理协议
-	VOID onPT_DOUBLE_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_SEARCH_ROOM(CConnectedUser* connectedUser, BYTE* packet);
 
 	// 接收到飞机布设信息
-	VOID onPT_DOUBLE_BATTLE_INSERT_JUNIOR_PLANE(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_DOUBLE_BATTLE_INSERT_MIDDLE_PLANE(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_DOUBLE_BATTLE_INSERT_SENIOR_PLANE(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_DOUBLE_BATTLE_INSERT_JUNIOR_STEALTH_PLANE(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_DOUBLE_BATTLE_INSERT_MIDDLE_STEALTH_PLANE(CConnectedUser* connectedUser, BYTE* packet);
-	VOID onPT_DOUBLE_BATTLE_INSERT_SENIOR_STEALTH_PLANE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_JUNIOR_PLANE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_MIDDLE_PLANE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_SENIOR_PLANE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_JUNIOR_STEALTH_PLANE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_MIDDLE_STEALTH_PLANE(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_SENIOR_STEALTH_PLANE(CConnectedUser* connectedUser, BYTE* packet);
 
 	// 接收到武器布设信息
-	VOID onPT_DOUBLE_BATTLE_INSERT_SENIOR_ANTI_STEALTH_RADAR(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_MIDDLE_ANTI_STEALTH_RADAR(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_JUNIOR_ANTI_STEALTH_RADAR(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_SENIOR_MISSILE(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_MIDDLE_MISSILE(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_JUNIOR_MISSILE(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_SENIOR_RADAR(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_MIDDLE_RADAR(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_JUNIOR_RADAR(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_SENIOR_CANNONBALL(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_MIDDLE_CANNONBALL(CConnectedUser* connectedUser, BYTE* packet);
-    VOID onPT_DOUBLE_BATTLE_INSERT_JUNIOR_CANNONBALL(CConnectedUser* connectedUser, BYTE* packet);
+	void onPT_DOUBLE_BATTLE_INSERT_SENIOR_ANTI_STEALTH_RADAR(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_MIDDLE_ANTI_STEALTH_RADAR(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_JUNIOR_ANTI_STEALTH_RADAR(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_SENIOR_MISSILE(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_MIDDLE_MISSILE(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_JUNIOR_MISSILE(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_SENIOR_RADAR(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_MIDDLE_RADAR(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_JUNIOR_RADAR(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_SENIOR_CANNONBALL(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_MIDDLE_CANNONBALL(CConnectedUser* connectedUser, BYTE* packet);
+    void onPT_DOUBLE_BATTLE_INSERT_JUNIOR_CANNONBALL(CConnectedUser* connectedUser, BYTE* packet);
 
 	// 数据库读写操作
 	// 用户账户注册 登录 信息更新数据包处理
@@ -207,5 +218,5 @@ private:
 	//// 辅助函数
 	int assignCards(int* cardType, int* numOfCards, int* levelOfCards, /*char* nameOfCards, */int kindsOfCards, int rangeOfCardNum, CConnectedUser* connectedUser);
 	void loadCardsInSupplyChest(S_PT_OPEN_SUPPLY_CHEST_SUCC_U* ptGetSupplyChestSuccU, int* cardType, int* numOfCards, int* level, /*char* nameOfCards,*/ int kindsOfCard);
-	BOOL updateDBwithDataInSupplyChest(S_PT_OPEN_SUPPLY_CHEST_SUCC_U* ptGetSupplyChestSuccU, int userId, char* password, int kindsOfCards);
+	bool updateDBwithDataInSupplyChest(S_PT_OPEN_SUPPLY_CHEST_SUCC_U* ptGetSupplyChestSuccU, int userId, char* password, int kindsOfCards);
 };

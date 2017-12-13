@@ -19,8 +19,10 @@ public:
 	BOOL	Begin(DWORD maxRoomCount); // 开始函数
 	BOOL	End(VOID); // 结束函数
 
-	// 时间每过一秒所调用的函数
+	// 刷新房间状态的函数
 	BOOL	UpdateRooms(CGameIocp *iocp);
+	// 与客户端同步房间状态的函数
+	BOOL SyncRooms(CGameIocp *iocp);
 
 	// 使用快速进入房间功能时所调用的函数
 	CRoom*	QuickJoinRoom(CConnectedUser *connectedUser, ROOM_TYPE roomType);

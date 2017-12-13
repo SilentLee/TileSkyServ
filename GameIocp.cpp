@@ -37,21 +37,29 @@ DWORD WINAPI GameThreadCallback(LPVOID parameter)
 	return 0;
 }
 
-CGameIocp::CGameIocp(VOID)
+DWORD WINAPI SyncThreadCallback(LPVOID parameter)
+{
+	CGameIocp* Owner = (CGameIocp*)parameter;
+	Owner->SyncThreadCallback();
+
+	return 0;
+}
+
+CGameIocp::CGameIocp(void)
 {
 }
 
-CGameIocp::~CGameIocp(VOID)
+CGameIocp::~CGameIocp(void)
 {
 }
 
 // 每隔 30000 毫秒, 向客户端发送检测数据, 确认客户端是否正常连接的线程 
-VOID CGameIocp::KeepThreadCallback(VOID)
+void CGameIocp::KeepThreadCallback(void)
 {
 	// KeepAlive信号通过数据只发送4Byte
 	DWORD KeepAlive = 0xFFFF;
 
-	while (TRUE)
+	while (true)
 	{
 		// 每30秒传送一次KeepAlive信号
 		// 在 WaitForSingleObject 函数中, 当 mKeepThreadDestroyEvent 变成有信号的状态 ( 通过 SetEvent(mKeepThreadDestroyEvent) ), 结束阻塞状态
@@ -60,7 +68,6 @@ VOID CGameIocp::KeepThreadCallback(VOID)
 
 		if (Result == WAIT_OBJECT_0) // WaitForSingleObject 变为有信号的状态, 结束线程
 			return;
-
 		// 利用ConnectdUserManager向所有用户传递
 		mConnectedUserManager.WriteAll(0x3000000, (BYTE*) &KeepAlive, sizeof(DWORD));
 		printf("KeepThreadCallback\n");
@@ -70,25 +77,37 @@ VOID CGameIocp::KeepThreadCallback(VOID)
 // 用于每隔 1000 毫秒检测一次游戏时间的线程
 // 与继承自父类 CIocp 类中的 WorkerThread 作用不同, WorkerThread 用于处理网络通信的各项工作
 // GameThreadCallback 用于管理游戏规则
-VOID CGameIocp::GameThreadCallback(VOID)
+void CGameIocp::GameThreadCallback(void)
 {
 	// NEW_UPDATE
 	//return;
 
-	while (TRUE)
+	while (true)
 	{
 		//DWORD Result = WaitForSingleObject(mGameThreadDestroyEvent, 1000);
-		DWORD Result = WaitForSingleObject(mGameThreadDestroyEvent, 1000);
+		DWORD Result = WaitForSingleObject(mGameThreadDestroyEvent, 1000 / 60);
 
 		if (Result == WAIT_OBJECT_0) // WaitForSingleObject 变为有信号的状态, 结束线程
 			return;
-
 		// 每秒调用一次, 处理游戏规则, 如计算游戏还有多长时间结束等
 		mRoomManager.UpdateRooms(this);
 	}
 }
 
-BOOL CGameIocp::Begin(VOID)
+void CGameIocp::SyncThreadCallback(void)
+{
+	while (true)
+	{
+		DWORD Result = WaitForSingleObject(mSyncThreadDestroyEvent, 1000);
+		
+		if (Result == WAIT_OBJECT_0)
+			return;
+		// 此处通过 mRoomManager 广播战场态势更新信息
+		mRoomManager.SyncRooms(this);
+	}
+}
+
+bool CGameIocp::Begin(void)
 {
 	// 读取并保存数据文件
 	CIniFile	IniFile;
@@ -101,27 +120,23 @@ BOOL CGameIocp::Begin(VOID)
 	else
 	{
 		CLog::WriteLogNoDate(_T("IniFile.Open"));
-
-		// 没有找到文件, 结束并返回 FALSE
+		// 没有找到文件, 结束并返回 false
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// 初始化父类 CIocp
 	// 根据 CPU 核数生成两倍的 workThread
-	// 创建完成端口的句柄值 mIocpHandle = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
-	// 创建 IOCP 的工作线程, HANDLE WorkerThread = CreateThread(NULL, 0, ::WorkerThreadCallback, this, 0, NULL);
+	// 创建完成端口的句柄值 mIocpHandle = CreateIoCompletionPort(INVALID_HANDLE_VALUE, nullptr, 0, 0);
+	// 创建 IOCP 的工作线程, HANDLE WorkerThread = CreateThread(nullptr, 0, ::WorkerThreadCallback, this, 0, nullptr);
 	// 通过 mWorkerThreadVector 进行管理, mWorkerThreadVector.push_back(WorkerThread);
 	// 在 CIocp::WorkerThreadCallback 中, 通过调用 GetQueuedCompletionStatus 阻塞线程, 等待 Socket IO 完成
 	// 然后调用 OnIoRead, OnIoWrite, OnIoConnected, OnIoDisconnected 进行处理
 	if (!CIocp::Begin()) // 启动了 WorkerThread, 用于网络通信 Socket 完成事件的处理
 	{	
 		CLog::WriteLogNoDate(_T("CIocp::Begin"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// CNetworkSession 对象 mListenSession 初始化
@@ -129,20 +144,16 @@ BOOL CGameIocp::Begin(VOID)
 	if (!mListenSession.Begin())
 	{
 		CLog::WriteLogNoDate(_T("ListenSession.Begin"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// 创建用于 TCP 的 ServerSocket
-	// 在 CNetworkSession 中, mSocket	= WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+	// 在 CNetworkSession 中, mSocket	= WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 	if (!mListenSession.TcpBind()){
 		CLog::WriteLogNoDate(_T("ListenSession.TcpBind"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// 绑定创建的TCP的 ServerSocket 用于监听客户端请求
@@ -152,10 +163,8 @@ BOOL CGameIocp::Begin(VOID)
 	if (!mListenSession.Listen(DEFAULT_PORT, MAX_USER))
 	{
 		CLog::WriteLogNoDate(_T("ListenSession.Listen"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// 在使用 Accept 函数的时候, 通过 CreateIoCompletionPort 函数将客户端连接的 Socket 与完成端口绑定
@@ -165,29 +174,23 @@ BOOL CGameIocp::Begin(VOID)
 	if (!CIocp::RegisterSocketToIocp(mListenSession.GetSocket(), (ULONG_PTR) &mListenSession))
 	{
 		CLog::WriteLogNoDate(_T("CIocp::RegisterSocketToIocp"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// 数据库连接池
 	if(!mMySqlSessionPool.Begin())
 	{
 		CLog::WriteLogNoDate(_T("MySqlSessionPool.Begin"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	if (!mConnectedUserManager.Begin(MAX_USER, mListenSession.GetSocket()))
 	{
 		CLog::WriteLogNoDate(_T("ConnectedUserManager.Begin"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
 	// ?????????????????????????????
@@ -195,71 +198,80 @@ BOOL CGameIocp::Begin(VOID)
 	if (!mRoomManager.Begin(MAX_USER))
 	{
 		CLog::WriteLogNoDate(_T("RoomManager.Begin"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 	
 	// 将 mConnectedUserVector 中的所有 ConnectedUser 的 socket 设置为等待客户端连接的状态 向监听socket投递 acceptEx 请求
 	if (!mConnectedUserManager.AcceptAll())
 	{
 		CLog::WriteLogNoDate(_T("ConnectedUserManager.AllAccept"));
-
 		End();
-
-		return FALSE;
+		return false;
 	}
 
+	// 创建心跳线程销毁事件句柄
 	mKeepThreadDestroyEvent = CreateEvent( // Return Handle 事件对象 此时为无信号状态
-		NULL, // LPSECURITY_ATTRIBUTES  lpEventAttributes 安全属性
-		FALSE, // BOOL  bManualReset 复位方式
-		FALSE, // BOOL  bInitialState 初始状态
-		NULL); //  LPCTSTR  lpName 对象名称
+		nullptr, // LPSECURITY_ATTRIBUTES  lpEventAttributes 安全属性
+		false, // bool  bManualReset 复位方式
+		false, // bool  bInitialState 初始状态
+		nullptr); //  LPCTSTR  lpName 对象名称
 	if (!mKeepThreadDestroyEvent)
 	{
 		End();
-
-		return FALSE;
+		return false;
 	}
 
-	// 处理KeepAliveThread相关操作
+	// 创建心跳线程句柄
 	mKeepThreadHandle		= CreateThread(
-		NULL, // LPSECURITY_ATTRIBUTES  lpThreadAttributes 安全属性
+		nullptr, // LPSECURITY_ATTRIBUTES  lpThreadAttributes 安全属性
 		0, // SIZE_T  dwStackSize 设置初始栈大小, 为 0, 默认使用与调用该函数线程相同的栈空间大小
 		::KeepThreadCallback, // LPTHRREAD_START_ROUTINE  lpStartAddress // 指向线程函数的指针
-		this, // LPVOID  lpParameter 传入的参数
+		this, // LPvoid  lpParameter 传入的参数
 		0, // DWORD  dwCreationFlags
-		NULL); // LPDWORD  lpThreadId
+		nullptr); // LPDWORD  lpThreadId
 	if (!mKeepThreadHandle)
 	{
 		End();
-
-		return FALSE;
+		return false;
 	}
 
-	mGameThreadDestroyEvent = CreateEvent(NULL, FALSE, FALSE, NULL); // 创建事件, 此时为无信号状态
+	// 创建游戏模拟判决计算线程销毁句柄
+	mGameThreadDestroyEvent = CreateEvent(nullptr, false, false, nullptr); // 创建事件, 此时为无信号状态
 	if (!mGameThreadDestroyEvent)
 	{
 		End();
-
-		return FALSE;
+		return false;
 	}
-
-	mGameThreadHandle		= CreateThread(NULL, 0, ::GameThreadCallback, this, 0, NULL);
+	// 创建游戏模拟判决计算线程句柄
+	mGameThreadHandle		= CreateThread(nullptr, 0, ::GameThreadCallback, this, 0, nullptr);
 	if (!mGameThreadHandle)
 	{
 		End();
-
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	// 创建游戏模拟判决计算线程销毁句柄
+	mSyncThreadDestroyEvent = CreateEvent(nullptr, false, false, nullptr); // 创建事件, 此时为无信号状态
+	if (!mGameThreadDestroyEvent)
+	{
+		End();
+		return false;
+	}
+	// 创建游戏模拟判决计算线程句柄
+	mSyncThreadHandle = CreateThread(nullptr, 0, ::SyncThreadCallback, this, 0, nullptr);
+	if (!mGameThreadHandle)
+	{
+		End();
+		return false;
+	}
+
+	return true;
 }
 
-BOOL CGameIocp::End(VOID)
+bool CGameIocp::End(void)
 {
-	// 结束KeepAliveThread和GameThread
+	// 结束KeepAliveThread
 	if (mKeepThreadDestroyEvent && mKeepThreadHandle)
 	{
 		SetEvent(mKeepThreadDestroyEvent); // 设置 mKeepThreadDestroyEvent 为有信号, 结束 KeepThreadCallback
@@ -271,6 +283,7 @@ BOOL CGameIocp::End(VOID)
 		CloseHandle(mKeepThreadHandle);
 	}
 
+	// 结束 GameThread
 	if (mGameThreadDestroyEvent && mGameThreadHandle)
 	{
 		SetEvent(mGameThreadDestroyEvent); // 设置 mGameThreadDestroyEvent 为有信号, 结束 GameThreadCallback
@@ -280,6 +293,16 @@ BOOL CGameIocp::End(VOID)
 
 		CloseHandle(mGameThreadDestroyEvent);
 		CloseHandle(mGameThreadHandle);
+	}
+
+	// 结束 SyncThread
+	if (mSyncThreadDestroyEvent && mSyncThreadHandle)
+	{
+		SetEvent(mSyncThreadDestroyEvent);
+		WaitForSingleObject(mSyncThreadHandle, INFINITE);
+
+		CloseHandle(mSyncThreadDestroyEvent);
+		CloseHandle(mSyncThreadHandle);
 	}
 
 	CIocp::End();
@@ -294,7 +317,7 @@ BOOL CGameIocp::End(VOID)
 	//mDataBase.End();
 	mMySqlSessionPool.End();
 
-	return TRUE;
+	return true;
 }
 
 

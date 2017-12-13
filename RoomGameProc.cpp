@@ -31,12 +31,45 @@ ROOM_STATUS CRoom::UpdateGameProcess()
 {
 	CThreadSync Sync;
 	 
-	if (mBattleField != NULL) {
+	if (mBattleField != nullptr) {
 
 		// 更新对战进程 读取此时战场状态
 		ENUM_BATTLE_STATUS BattleStatus = mBattleField->UpdateBattleFieldSituation();
 
 		// 更新房间状态
+		// 对战进行中 房间状态设置为游戏进行中
+		if (BattleStatus == BATTLE_STATUS_IN_PROGRESSING) {
+			mStatus = ROOM_STATUS_GAME_IN_PROGRESS;
+			// 向房间内玩家广播当前战场态势
+			//BroadcastBattleSituation();
+		}
+		// 蓝方取胜 房间状态设置为游戏结束中
+		else if (BattleStatus == BATTLE_STATUS_BLUE_WIN) {
+			mStatus = ROOM_STATUS_GAME_ENDING;
+		}
+		// 红方取胜 房间状态设置为游戏结束中
+		else if (BattleStatus == BATTLE_STATUS_RED_WIN) {
+			mStatus = ROOM_STATUS_GAME_ENDING;
+		}
+		// 平局 房间状态设置为游戏结束中
+		else if (BattleStatus == BATTLE_STATUS_DRAW) {
+			mStatus = ROOM_STATUS_GAME_ENDING;
+		}
+	}
+
+	// 返回当前房间状态
+	return mStatus;
+}
+
+// 与客户端同步游戏进程的函数
+ROOM_STATUS CRoom::SyncGameProcess()
+{
+	CThreadSync Sync;
+
+	if (mBattleField != nullptr) {
+
+		ENUM_BATTLE_STATUS BattleStatus = mBattleField->GetStatus();
+
 		// 对战进行中 房间状态设置为游戏进行中
 		if (BattleStatus == BATTLE_STATUS_IN_PROGRESSING) {
 			mStatus = ROOM_STATUS_GAME_IN_PROGRESS;

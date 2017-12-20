@@ -60,13 +60,12 @@ void Weapon::Move()
 	{
 	// 蓝方所属兵力 自战场下方向上运动
 	case TROOPS_BLUE:
-		this->mPosY += mPropertyWp.SPEED;
+		mPosY = min(HEIGHT_OF_BATTLE_DISPLAY_MAP, mPosY + mPropertyWp.SPEED);
 		break;
 
 	// 红方所属兵力 自战场上方向下运动
 	case TROOPS_RED:
-		//mPosY = max(0.0f, mPosY - mPropertyWp.SPEED);
-		mPosY = mPosY - mPropertyWp.SPEED;
+		mPosY = max(0.0f, mPosY - mPropertyWp.SPEED);
 		break;
 	}
 }

@@ -4,6 +4,17 @@
 #include "string.h"
 #include <algorithm>
 
+// 战场模拟地图方格宽度
+#define WIDTH_OF_BATTLE_SIMULATION_MAP_CELL			27.0f
+// 战场态势仿真地图宽度
+#define WIDTH_OF_BATTLE_SIMULATION_MAP							40
+// 战场态势仿真地图高度
+#define HEIGHT_OF_BATTLE_SIMULATION_MAP						60
+// 战场态势显示地图宽度
+#define WIDTH_OF_BATTLE_DISPLAY_MAP								1080.0f
+// 战场态势显示地图高度
+#define HEIGHT_OF_BATTLE_DISPLAY_MAP								1620.0f
+
 using namespace std;
 
 // 武器类型
@@ -94,8 +105,8 @@ protected:
 	// 武器在战场中的标签序号
 	int mWeaponTag;
 
+// 存取函数
 public:
-	// 存取函数
 	void SetTroopsIn(ENUM_TROOPS troopsIn) { CThreadSync Sync; mTroopsIn = troopsIn; };
 	void SetProperty(S_PROPERTY_WP propertyWp) { CThreadSync Sync; memcpy(&mPropertyWp, &propertyWp, sizeof(S_PROPERTY_WP)); };
 	void SetPosX(float posX) { CThreadSync Sync; mPosX = posX; };
@@ -110,6 +121,7 @@ public:
 	int GetStatus() { CThreadSync Sync; return mStatus; };
 	int GetWeaponTag() { CThreadSync Sync; return mWeaponTag; };
 
+// 行为函数
 public:
 	void Move();
 	void Attack();

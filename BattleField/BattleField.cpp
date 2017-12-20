@@ -63,7 +63,7 @@ Weapon CBattleField::InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troops
 	// 应当更改为用户从数据库中读取的参数
 	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
 	int LEVEL = 1;
-	float SPEED = 3;
+	float SPEED = 3.0f;
 	int RANGE_DEC = 5;
 	int DP = 10;
 	int HP = 100;
@@ -82,7 +82,7 @@ Weapon CBattleField::InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troops
 	}
 	else if (troopsIn == TROOPS_RED) {
 		// 红方从上方向下飞行
-		posY = 2060 - posY;
+		posY = HEIGHT_OF_BATTLE_DISPLAY_MAP - posY;
 	}
 
 	Weapon.init(troopsIn, propertyWp, posX, posY, WeaponTag);

@@ -53,6 +53,7 @@ CGameIocp::~CGameIocp(void)
 {
 }
 
+// 心跳线程回调函数
 // 每隔 30000 毫秒, 向客户端发送检测数据, 确认客户端是否正常连接的线程 
 void CGameIocp::KeepThreadCallback(void)
 {
@@ -74,6 +75,7 @@ void CGameIocp::KeepThreadCallback(void)
 	}
 }
 
+// 游戏模拟判决线程的回调函数
 // 用于每隔 1000 毫秒检测一次游戏时间的线程
 // 与继承自父类 CIocp 类中的 WorkerThread 作用不同, WorkerThread 用于处理网络通信的各项工作
 // GameThreadCallback 用于管理游戏规则
@@ -94,6 +96,7 @@ void CGameIocp::GameThreadCallback(void)
 	}
 }
 
+// 定时同步服务器与客户端战场态势线程的回调函数
 void CGameIocp::SyncThreadCallback(void)
 {
 	while (true)

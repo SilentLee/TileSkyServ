@@ -86,7 +86,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\TileSkyServ\BattleField;..\TileSkyServ\BattleField\Weapons;..\LowLib;..\Packet;C:\Program Files %28x86%29\MySQL\MySQL Connector C 6.1.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\TileSkyServ\BattleField\BattleSituationMapCell;..\TileSkyServ\BattleField;..\TileSkyServ\BattleField\Weapons;..\LowLib;..\Packet;C:\Program Files %28x86%29\MySQL\MySQL Connector C 6.1.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -104,6 +104,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,6 +169,7 @@
     <ClInclude Include="..\Packet\USER_PT_WritePacket.h" />
     <ClInclude Include="BattleFieldParams.h" />
     <ClInclude Include="BattleField\BattleField.h" />
+    <ClInclude Include="BattleField\BattleSituationMapCell\BattleSituationMapCell.h" />
     <ClInclude Include="BattleField\Weapons\Weapon.h" />
     <ClInclude Include="ConnectedUser.h" />
     <ClInclude Include="ConnectedUserManager.h" />
@@ -185,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BattleField\BattleField.cpp" />
+    <ClCompile Include="BattleField\BattleSituationMapCell\BattleSituationMapCell.cpp" />
     <ClCompile Include="BattleField\Weapons\Weapon.cpp" />
     <ClCompile Include="ConnectedUser.cpp" />
     <ClCompile Include="ConnectedUserManager.cpp" />

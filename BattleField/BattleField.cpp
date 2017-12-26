@@ -63,11 +63,48 @@ Weapon CBattleField::InputTroops(ENUM_WEAPON_TYPE weaponType, ENUM_TROOPS troops
 	// 应当更改为用户从数据库中读取的参数
 	ENUM_WEAPON_TYPE WP_TYPE = weaponType;
 	int LEVEL = 1;
-	float SPEED = 3.0f;
+	float SPEED;
 	int RANGE_DEC = 5;
 	int DP = 10;
 	int HP = 100;
 	int RANGE_FIRE = 5;
+
+	switch (WP_TYPE)
+	{
+	case WP_TYPE_FIGHTER_PLANE:
+		SPEED = 6.0f;
+		break;
+	case WP_TYPE_BOMBING_PLANE:
+		SPEED = 1.0f;
+		break;
+	case WP_TYPE_ANTI_AIRCRAFT_MISSILE:
+		SPEED = 3.0f;
+		break;
+	case WP_TYPE_EARLY_WARNING_PLANE:
+		SPEED = 3.0f;
+		break;
+	case WP_TYPE_FLAK:
+		SPEED = 0.0f;
+		break;
+	case WP_TYPE_JAMMING_PLANE:
+		SPEED = 3.0f;
+		break;
+	case WP_TYPE_RADAR:
+		SPEED = 0.0f;
+		break;
+	case WP_TYPE_8:
+		SPEED = 3.0f;
+		break;
+	case WP_TYPE_9:
+		SPEED = 3.0f;
+		break;
+	case WP_TYPE_10:
+		SPEED = 3.0f;
+		break;
+	case WP_TYPE_11:
+		SPEED = 3.0f;
+		break;
+	}
 
 	S_PROPERTY_WP propertyWp = S_PROPERTY_WP{ WP_TYPE, LEVEL, SPEED, RANGE_DEC, DP, HP, RANGE_FIRE };
 

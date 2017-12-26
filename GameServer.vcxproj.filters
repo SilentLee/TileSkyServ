@@ -46,6 +46,9 @@
     <Filter Include="BattleField\Weapons">
       <UniqueIdentifier>{58ec80b7-234f-4022-a01a-5de76d85beeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BattleField\BattleSituationMapCell">
+      <UniqueIdentifier>{aef381c1-73bb-47a3-8a15-7446e47a6d6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -147,6 +150,9 @@
     <ClInclude Include="..\Packet\BATTLE_PT_WritePacket.h">
       <Filter>Packet</Filter>
     </ClInclude>
+    <ClInclude Include="BattleField\BattleSituationMapCell\BattleSituationMapCell.h">
+      <Filter>BattleField\BattleSituationMapCell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -214,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="RoomGameProc.cpp">
       <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleField\BattleSituationMapCell\BattleSituationMapCell.cpp">
+      <Filter>BattleField\BattleSituationMapCell</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "MultiThreadSync.h"
 #include "CriticalSection.h"
 #include "Weapon.h"
+#include "BattleSituationMapCell.h"
 
 using namespace std;
 
@@ -18,6 +19,9 @@ typedef enum ENUM_BATTLE_STATUS {
 
 class CBattleField : public CMultiThreadSync<CBattleField>
 {
+// 战场态势仿真地图
+private:
+
 private:
 	// 存储对战双方兵力的动态数组
 	vector<Weapon> mTroopsInBlueTeam;

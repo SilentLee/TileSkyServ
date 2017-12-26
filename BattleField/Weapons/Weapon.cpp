@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Weapon.h"
-
+//sdlfkjdsafjlsadjfklkskjdlkfjslkfdjlksdjflksjdlfkjsklf
 // ¹¹Ôìº¯Êý
 Weapon::Weapon()
 {

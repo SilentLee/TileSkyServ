@@ -13,13 +13,4 @@ d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.h(
 d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\room.h(19): warning C4091: “typedef ”: 没有声明变量时忽略“ROOM_STATUS”的左侧
 d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\room.h(26): warning C4091: “typedef ”: 没有声明变量时忽略“ROOM_TYPE”的左侧
 d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\room.h(94): warning C4267: “return”: 从“size_t”转换到“USHORT”，可能丢失数据
-  BattleField.cpp
-d:\tilesky3.0_demo\tileskyserv\proj.win32\lowlib\multithreadsync.h(3): warning C4091: “extern ”: 没有声明变量时忽略“CCriticalSection”的左侧
-d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\weapons\weapon.h(51): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_WEAPON_STATUS”的左侧
-d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\weapons\weapon.h(63): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_MOVE_DIRECTION”的左侧
-d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\weapons\weapon.h(69): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_TROOPS”的左侧
-d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.h(17): warning C4091: “typedef ”: 没有声明变量时忽略“ENUM_BATTLE_STATUS”的左侧
-d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.cpp(110): warning C4018: “<”: 有符号/无符号不匹配
-d:\tilesky3.0_demo\tileskyserv\proj.win32\tileskyserv\battlefield\battlefield.cpp(115): warning C4018: “<”: 有符号/无符号不匹配
-  正在生成代码...
   GameServer.vcxproj -> D:\TileSky3.0_Demo\TileSkyServ\proj.win32\Debug\TileSkyServ.exe

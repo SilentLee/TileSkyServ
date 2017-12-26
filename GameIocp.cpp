@@ -102,6 +102,7 @@ void CGameIocp::SyncThreadCallback(void)
 	while (true)
 	{
 		DWORD Result = WaitForSingleObject(mSyncThreadDestroyEvent, 1000);
+		//DWORD Result = WaitForSingleObject(mSyncThreadDestroyEvent, 10000);
 		
 		if (Result == WAIT_OBJECT_0)
 			return;

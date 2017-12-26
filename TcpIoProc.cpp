@@ -41,9 +41,9 @@ VOID CGameIocp::OnIoRead(VOID *object, DWORD dataLength)
 {
 	CConnectedUser *ConnectedUser = (CConnectedUser*) object;
 
-	DWORD	Protocol						= 0;
-	BYTE	Packet[MAX_BUFFER_LENGTH]		= {0,};
-	DWORD	PacketLength					= 0;
+	DWORD	Protocol = 0;
+	BYTE	Packet[MAX_BUFFER_LENGTH] = {0,};
+	DWORD	PacketLength = 0;
 
 	BYTE	WriteBuffer[MAX_BUFFER_LENGTH]	= {0,};
 
